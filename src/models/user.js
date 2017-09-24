@@ -43,7 +43,7 @@ module.exports = function defineUser(sequelize, DataTypes) {
     },
   });
   User.associate = function associate(models) {
-    // associations can be defined here
+    User.belongsTo(models.Team);
   };
   return User;
 };
