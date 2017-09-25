@@ -1,0 +1,15 @@
+<%- include('../includes/top-layout') %>
+
+<h1>Administración de Usuarios</h1>
+<% if (users && users.length) { %>
+
+  <ul class="table full-width">
+    <% users.forEach(user => { %>
+      <%- include('_user-row', { user }) %>
+    <% })%>
+  </ul>
+<% } else { %>
+  <p class="empty-notice">No hay usuarios</p>
+<% } %>
+
+<%- include('../includes/bottom-layout') %>

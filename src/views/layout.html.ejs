@@ -3,18 +3,14 @@
 
   <head>
     <meta charset="utf-8">
-    <title>IIC2513 - CHANGE-ME</title>
+    <title>Dante</title>
     <% if (env !== 'development') { %>
       <link rel="stylesheet" href="/assets/styles.css">
     <% } %>
   </head>
 
   <body>
-    <header>
-      <div id="logo">
-        <img src="/assets/logo.png" alt="Logo" />
-      </div>
-    </header>
+    <%- include('header') %>
     <%- body %>
     <script src="/assets/app.js"></script>
   </body>

@@ -1,0 +1,84 @@
+$sidebarWidth: 200px;
+
+.admin-container {
+  margin: 20px auto;
+  display: flex;
+  align-items: stretch;
+
+  .sidebar {
+    width: $sidebarWidth;
+    margin: 0 20px;
+    padding: 0 20px 20px;
+    flex: none;
+    box-sizing: border-box;
+    order: 1;
+    border: 1px solid lighten($bodyColor, 85);
+    background-color: white;
+    border-radius: 5px;
+    font-family: $sans-serif;
+    font-size: 14px;
+
+    .admin-navigation ul {
+      list-style: none;
+      margin: 5px 0;
+      padding: 0;
+
+      li a {
+        display: block;
+        margin: 10px 0;
+        padding: 2px 10px;
+        border-left: 3px solid lighten($bodyColor, 85);
+      }
+    }
+  }
+
+  .admin-content {
+    flex: auto;
+    padding: 0 20px;
+    order: 0;
+  }
+
+  .empty-notice {
+    margin: 30px;
+    text-align: center;
+    color: lighten($bodyColor, 60);
+    font-size: 20px;
+  }
+
+  .table {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-family: $sans-serif;
+    background: white;
+    border-radius: 4px;
+    padding: 6px 0;
+    border: 1px solid lighten($bodyColor, 85);
+  }
+
+  .table-cell {
+    vertical-align: middle;
+    padding: 10px;
+    border-bottom: 1px solid lighten($bodyColor, 85);
+  }
+
+  .table-row:last-of-type {
+    .table-cell {
+      border-bottom-color: white;
+    }
+  }
+
+  .user-gravatar {
+    width: 50px;
+    padding: 0 20px;
+  }
+
+  .user-fullname {
+    display: inline-block;
+    font-size: 18px;
+    border-bottom: 1px solid lighten($bodyColor, 85);
+  }
+  .user-username {
+    display: block;
+  }
+}

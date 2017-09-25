@@ -1,3 +1,5 @@
+const crypto = require('crypto');
+
 module.exports = function defineUser(sequelize, DataTypes) {
   const User = sequelize.define('User', {
     firstName: {
@@ -43,7 +45,18 @@ module.exports = function defineUser(sequelize, DataTypes) {
     },
   });
   User.associate = function associate(models) {
-    User.belongsTo(models.Team);
+    User.belongsTo(models.Team, { foreignKey: 'teamId' });
   };
+
+  User.prototype.fullName = function fullName() {
+    return `${this.firstName} ${this.lastName}`;
+  };
+
+  User.prototype.gravatarUrl = function gravatarUrl(size = 50) {
+    const emailHash = crypto.createHash('md5')
+      .update(this.email.trim()).digest('hex');
+    return `https://www.gravatar.com/avatar/${emailHash}?s=${size}`;
+  };
+
   return User;
 };
