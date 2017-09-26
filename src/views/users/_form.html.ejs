@@ -1,0 +1,88 @@
+<div>
+  <% if (locals.errors) { %>
+    <div class="flashMessage errors">
+      Necesitas arreglar los siguiente errores:
+      <ul>
+        <% errors.forEach(error => { %>
+          <li><%= error.message %></li>
+        <% }); %>
+      </ul>
+    </div>
+  <% } %>
+  <form action="<%= submitUserPath %>" method="post">
+    <% if (!user.isNewRecord) { %>
+      <input type="hidden" name="_method" value="patch" />
+    <% } %>
+    <div class="form-row">
+      <div class="form-row-label">
+        <label for="firstName">Nombres</label>
+      </div>
+      <div class="form-row-control">
+        <input type="text" name="firstName" id="firstName" value="<%= user.firstName %>" />
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-row-label">
+        <label for="lastName">Apellidos</label>
+      </div>
+      <div class="form-row-control">
+        <input type="text" name="lastName" id="lastName" value="<%= user.lastName %>" />
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-row-label">
+        <label for="username">Nombre de usuario</label>
+      </div>
+      <div class="form-row-control">
+        <input type="text" name="username" id="username" value="<%= user.username %>" />
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-row-label">
+        <label for="email">Correo electrónico</label>
+      </div>
+      <div class="form-row-control">
+        <input type="email" name="email" id="email" value="<%= user.email %>" />
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-row-label">
+        <label for="password">Contraseña</label>
+        <span class="form-row-label-help">Debe tener mínimo un largo de 6 caracteres</span>
+      </div>
+      <div class="form-row-control">
+        <input type="password" name="password" id="password" value="" />
+      </div>
+    </div>
+    <% /* <div class="form-row">
+      <div class="form-row-label">
+        <label for="confirmation">Confirmar contraseña</label>
+      </div>
+      <div class="form-row-control">
+        <input type="password" name="confirmation" id="confirmation" value="" />
+      </div>
+    </div> */%>
+    <div class="form-row form-row-actions">
+
+      <div class="form-actions-cancel">
+        <a href="<%= homePath %>" class="btn btn-clear">Cancelar</a>
+      </div>
+
+      <div class="form-actions-submit">
+        <% if (user.isNewRecord) { %>
+          <input class="btn btn-submit" type="submit" name="create" value="Registrarse" />
+        <% } else { %>
+          <input class="btn btn-submit" type="submit" name="update" value="Actualizar" />
+          <input class="btn btn-danger" type="submit" name="delete" form="user-delete-form" value="Eliminar Mi Cuenta" />
+        <% } %>
+      </div>
+    </div>
+  </form>
+
+  <% if (!user.isNewRecord) { %>
+    <form id="user-delete-form" action="<%= deleteUserPath %>" method="post" name="delete">
+      <input type="hidden" name="_method" value="delete" />
+    </form>
+  <% } %>
+
+</div>

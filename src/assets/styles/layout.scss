@@ -145,16 +145,19 @@ a, a:visited {
 
 // Forms
 
-#signin-form {
+#signin-form, #signup-form {
   background: white;
   border: 2px solid lighten($bodyColor, 85);
   border-radius: 10px;
-  width: 60%;
-  margin: 50px auto;
-  padding: 20px;
+  margin: 30px auto;
+  padding: 10px 20px;
+}
 
+
+#signin-form {
+  width: 60%;
   .form-row-actions {
-    justify-content: center;
+   justify-content: flex-end;
   }
 }
 
@@ -178,6 +181,15 @@ form {
   .form-row-label {
     flex: 1;
     align-self: center;
+
+    .form-row-label-help {
+      display: block;
+      color: lighten($bodyColor, 40);
+      font-size: 12px;
+      &:first-of-type {
+        margin-top: 5px;
+      }
+    }
   }
 
   .form-row-control {

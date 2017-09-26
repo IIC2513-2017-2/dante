@@ -7,7 +7,7 @@
     <div class="session-actions">
       <% if (currentUser) { %>
         <span class="session-current-user">
-          <a href="#">
+          <a href="<%= usersShowPath(currentUser) %>">
             <img src="<%= currentUser.gravatarUrl(40) %>" alt="Gravatar de <%= currentUser.username %>" />
             <%= currentUser.username %>
           </a>
@@ -17,6 +17,7 @@
         <% } %>
         <input class="btn btn-small btn-clear" type="submit" form="signout-form" value="Cerrar sesión" />
       <% } else { %>
+        <a class="btn btn-small " href="<%= signUpPath %>" >Crear cuenta</a>
         <a class="btn btn-small btn-clear" href="<%= signInPath %>" >Iniciar sesión</a>
       <% } %>
     </div>
