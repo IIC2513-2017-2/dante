@@ -10,7 +10,6 @@ router.get('hello', '/', async (ctx) => {
 });
 
 router.post('hello', '/', (ctx) => {
-  console.log(ctx.request.body);
   ctx.flashMessage.notice = 'Form successfully processed';
   ctx.redirect(router.url('hello'));
 });

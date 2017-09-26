@@ -1,4 +1,12 @@
+const bcrypt = require('bcrypt');
 const crypto = require('crypto');
+
+async function buildPasswordHash(instance) {
+  if (instance.changed('password')) {
+    const hash = await bcrypt.hash(instance.password, 10);
+    instance.set('password', hash);
+  }
+}
 
 module.exports = function defineUser(sequelize, DataTypes) {
   const User = sequelize.define('User', {
@@ -44,6 +52,10 @@ module.exports = function defineUser(sequelize, DataTypes) {
       },
     },
   });
+
+  User.beforeUpdate(buildPasswordHash);
+  User.beforeCreate(buildPasswordHash);
+
   User.associate = function associate(models) {
     User.belongsTo(models.Team, { foreignKey: 'teamId' });
   };
@@ -56,6 +68,14 @@ module.exports = function defineUser(sequelize, DataTypes) {
     const emailHash = crypto.createHash('md5')
       .update(this.email.trim()).digest('hex');
     return `https://www.gravatar.com/avatar/${emailHash}?s=${size}`;
+  };
+
+  User.prototype.checkPassword = function checkPassword(password) {
+    return bcrypt.compare(password, this.password);
+  };
+
+  User.prototype.isAdmin = function isAdmin() {
+    return this.role === 'admin';
   };
 
   return User;

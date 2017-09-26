@@ -1,6 +1,6 @@
 <div>
   <% if (locals.errors) { %>
-    <div class="errors">
+    <div class="flashMessage errors">
       Necesitas arreglar los siguiente errores:
       <ul>
         <% errors.forEach(error => { %>
@@ -35,8 +35,8 @@
       </div>
       <div class="form-row-control">
         <select name="role" id="role">
-          <option value="user"  <%= user.role ===' user' ? selected : '' %> >Usuario</option>
-          <option value="admin" <%= user.role ===' admin' ? selected : '' %> >Administrador</option>
+          <option value="user"  <%= user.role === 'user' ? 'selected' : '' %> >Usuario</option>
+          <option value="admin" <%= user.role === 'admin' ? 'selected' : '' %> >Administrador</option>
         </select>
       </div>
     </div>

@@ -12,6 +12,14 @@ $noticeBgColor: rgb(224, 249, 255);
 $noticeBorderColor: darken($noticeBgColor, 5);
 $noticeColor: darken($noticeBgColor, 70);
 
+$errorBgColor: rgb(255, 224, 224);
+$errorBorderColor: darken($errorBgColor, 5);
+$errorColor: darken($errorBgColor, 70);
+
+$warningBgColor: rgb(255, 254, 210);
+$warningBorderColor: darken($warningBgColor, 30);
+$warningColor: darken($warningBgColor, 70);
+
 $btnBgDefault: rgb(0, 151, 191);
 $btnBgSubmit: rgb(0, 191, 94);
 $btnBgDanger: rgb(219, 36, 107);

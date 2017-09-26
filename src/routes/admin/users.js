@@ -1,4 +1,5 @@
 const KoaRouter = require('koa-router');
+
 const router = new KoaRouter();
 
 // Set User middleware
@@ -23,7 +24,6 @@ router.get('admin.users.index', '/', async (ctx) => {
     userCount: usersData.count,
     userNewPath: ctx.router.url('admin.users.new'),
     userEditPath: user => ctx.router.url('admin.users.edit', { id: user.id }),
-    notice: ctx.flashMessage.notice,
   });
 });
 

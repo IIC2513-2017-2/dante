@@ -11,7 +11,14 @@
 
   <body>
     <%- include('header') %>
-    <%- body %>
+    <div class="container">
+      <%- body %>
+    </div>
+    <% if (currentUser) { %>
+      <form action="<%= signOutPath %>" id="signout-form" name="signout-form" method="post">
+        <input type="hidden" name="_method" value="delete" />
+      </form>
+    <% } %>
     <script src="/assets/app.js"></script>
   </body>
 

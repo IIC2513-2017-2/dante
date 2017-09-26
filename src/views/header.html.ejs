@@ -1,7 +1,25 @@
 <header id="main-header">
   <div class="container">
-    <h2 class="brand-heading"><a href="<%= homePath %>" class="site-brand">Dante</a></h2>
-    <p class="brand-description">Bitácora de un ayudante de web</p>
+    <div class="brand">
+      <h2 class="brand-heading"><a href="<%= homePath %>" class="site-brand">Dante</a></h2>
+      <p class="brand-description">Bitácora de un ayudante de web</p>
+    </div>
+    <div class="session-actions">
+      <% if (currentUser) { %>
+        <span class="session-current-user">
+          <a href="#">
+            <img src="<%= currentUser.gravatarUrl(40) %>" alt="Gravatar de <%= currentUser.username %>" />
+            <%= currentUser.username %>
+          </a>
+        </span>
+        <% if (currentUser.isAdmin()) { %>
+          <a href="<%= adminIndexPath %>" class="btn btn-small">Administración</a>
+        <% } %>
+        <input class="btn btn-small btn-clear" type="submit" form="signout-form" value="Cerrar sesión" />
+      <% } else { %>
+        <a class="btn btn-small btn-clear" href="<%= signInPath %>" >Iniciar sesión</a>
+      <% } %>
+    </div>
   </div>
 </header>
 
@@ -10,6 +28,14 @@
     <div class="container">
       <div class="flashMessage notice">
         <p><%= notice %></p>
+      </div>
+    </div>
+<% } %>
+
+<% if (locals.warning) { %>
+    <div class="container">
+      <div class="flashMessage warning">
+        <p><%= warning %></p>
       </div>
     </div>
 <% } %>

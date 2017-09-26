@@ -5,6 +5,11 @@ const users = require('./users');
 const router = new KoaRouter();
 
 router.use(async (ctx, next) => {
+  if (!(ctx.state.currentUser && ctx.state.currentUser.isAdmin())) {
+    ctx.flashMessage.warning = 'No tienes permiso para acceder a la administración';
+    return ctx.redirect('/');
+  }
+
   Object.assign(ctx.state, {
     adminIndexPath: router.url('admin.index'),
     adminUsersPath: router.url('admin.users.index'),
@@ -12,7 +17,7 @@ router.use(async (ctx, next) => {
     adminTeamsPath: router.url('admin.teams.index'),
   });
 
-  await next();
+  return next();
 });
 
 // Admin Root
