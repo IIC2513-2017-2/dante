@@ -37,8 +37,8 @@ module.exports = function defineUser(sequelize, DataTypes) {
     role: {
       type: DataTypes.STRING,
       defaultValue: 'user',
+      allowNull: false,
       validate: {
-        allowNull: false,
         notEmpty: true,
         isIn: [['user', 'admin']],
       },

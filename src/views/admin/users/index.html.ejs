@@ -1,8 +1,12 @@
 <%- include('../includes/top-layout') %>
 
-<h1>Administración de Usuarios</h1>
-<% if (users && users.length) { %>
+<h1 class="page-title">Administración de Usuarios</h1>
 
+<p>Actualmente hay <%= userCount %> usuarios. </p>
+
+<a href="<%= userNewPath %>" class="btn">Crear Usuario</a>
+
+<% if (users && users.length) { %>
   <ul class="table full-width">
     <% users.forEach(user => { %>
       <%- include('_user-row', { user }) %>

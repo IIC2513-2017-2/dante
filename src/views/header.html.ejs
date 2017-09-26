@@ -4,3 +4,12 @@
     <p class="brand-description">Bitácora de un ayudante de web</p>
   </div>
 </header>
+
+
+<% if (locals.notice) { %>
+    <div class="container">
+      <div class="flashMessage notice">
+        <p><%= notice %></p>
+      </div>
+    </div>
+<% } %>

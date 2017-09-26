@@ -6,10 +6,10 @@ const router = new KoaRouter();
 
 router.use(async (ctx, next) => {
   Object.assign(ctx.state, {
-    adminIndexPath: () => router.url('admin.index'),
-    adminUsersPath: () => router.url('admin.users.index'),
-    adminPostsPath: () => router.url('admin.posts.index'),
-    adminTeamsPath: () => router.url('admin.teams.index'),
+    adminIndexPath: router.url('admin.index'),
+    adminUsersPath: router.url('admin.users.index'),
+    adminPostsPath: router.url('admin.posts.index'),
+    adminTeamsPath: router.url('admin.teams.index'),
   });
 
   await next();

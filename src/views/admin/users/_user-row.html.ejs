@@ -1,6 +1,6 @@
 <li class="table-row">
   <div class="table-cell user-gravatar">
-    <img src="<%= user.gravatarUrl() %>" alt="<%= user.fullName() %>'s gravatar" />
+    <img src="<%= user.gravatarUrl(100) %>" alt="<%= user.fullName() %>'s gravatar" />
   </div>
   <div class="table-cell">
     <span class="user-fullname"><%= user.fullName() %></span>
@@ -8,5 +8,8 @@
   </div>
   <div class="table-cell">
     <%= user.role %>
+  </div>
+  <div class="table-cell">
+    <a href="<%= userEditPath(user) %>" class="btn btn-small btn-clear">Editar</a>
   </div>
 </li>
