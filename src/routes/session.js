@@ -4,7 +4,7 @@ const router = new KoaRouter();
 
 router.get('session.new', '/new',
   async (ctx, next) => {
-    if (ctx.session.userId) {
+    if (ctx.state.currentUser) {
       return ctx.redirect('/');
     }
     return next();
