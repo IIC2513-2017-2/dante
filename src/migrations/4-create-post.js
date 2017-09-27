@@ -12,10 +12,10 @@ module.exports = {
         allowNull: false,
       },
       body: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
       },
       bodySource: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
       },
       authorId: {
         type: Sequelize.INTEGER,
