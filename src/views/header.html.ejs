@@ -7,8 +7,8 @@
     <div class="session-actions">
       <% if (currentUser) { %>
         <span class="session-current-user">
-          <a href="<%= usersShowPath(currentUser) %>">
-            <img src="<%= currentUser.gravatarUrl(40) %>" alt="Gravatar de <%= currentUser.username %>" />
+          <a href="<%= userShowPath(currentUser) %>">
+            <img src="<%= currentUser.gravatarUrl(80) %>" alt="Gravatar de <%= currentUser.username %>" />
             <%= currentUser.username %>
           </a>
         </span>

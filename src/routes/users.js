@@ -52,6 +52,7 @@ router.post('users.create', '/',
     try {
       const user = await ctx.orm.User.create(ctx.request.body);
       ctx.flashMessage.notice = `Usuario ${user.username} se ha creado correctamente`;
+      ctx.session.userId = user.id;
       ctx.redirect(ctx.router.url('users.show', user.username));
     } catch (validationError) {
       await ctx.render('users/new', {

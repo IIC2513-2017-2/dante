@@ -1,0 +1,80 @@
+<div>
+  <% if (locals.errors) { %>
+    <div class="flashMessage errors">
+      Necesitas arreglar los siguiente errores:
+      <ul>
+        <% errors.forEach(error => { %>
+          <li><%= error.message %></li>
+        <% }); %>
+      </ul>
+    </div>
+  <% } %>
+  <form action="<%= submitPostPath %>" method="post">
+    <% if (!post.isNewRecord) { %>
+      <input type="hidden" name="_method" value="patch" />
+    <% } %>
+
+    <div class="form-row">
+      <div class="form-row-label">
+        <label for="publishDate">Fecha</label>
+      </div>
+      <div class="form-row-control">
+        <input type="date" name="publishDate" id="publishDate" value="<%= post.inputDate() %>" />
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-row-label">
+        <label>Autor</label>
+      </div>
+      <div class="form-row-control">
+        <select name="authorId" id="authorId">
+          <% authors.forEach(author => { %>
+            <option value="<%= author.id %>"  <%= post.authorId === author.id ? 'selected' : '' %> ><%= `${author.fullName()} (${author.username})`%></option>
+          <% }) %>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-row-label">
+        <label>Estado</label>
+      </div>
+      <div class="form-row-control">
+        <select name="status" id="status">
+          <option value="draft"  <%= post.status === 'draft' ? 'selected' : '' %> >Borrador</option>
+          <option value="published" <%= post.status === 'published' ? 'selected' : '' %> >Publicado</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-post-content">
+      <label for="title" class="form-post-label">Titulo</label>
+      <input type="text" name="title" value="<%= post.title %>" class="form-post-title"/>
+    </div>
+    <div>
+      <label for="bodySource" class="form-post-label">Cuerpo</label>
+      <textarea name="bodySource" class="form-post-body"><%= post.bodySource %></textarea>
+    </div>
+    <div class="form-row form-row-actions">
+
+      <div class="form-actions-cancel">
+        <a href="<%= adminPostsPath %>" class="btn btn-clear">Cancelar</a>
+      </div>
+
+      <div class="form-actions-submit">
+        <% if (post.isNewRecord) { %>
+          <input class="btn btn-submit" type="submit" name="create" value="Crear Post" />
+        <% } else { %>
+          <input class="btn btn-submit" type="submit" name="update" value="Actualizar Post" />
+          <input class="btn btn-danger" type="submit" name="delete" form="post-delete-form" value="Eliminar Post" />
+        <% } %>
+      </div>
+    </div>
+  </form>
+
+  <% if (!post.isNewRecord) { %>
+    <form id="post-delete-form" action="<%= deletePostPath %>" method="post" name="delete">
+      <input type="hidden" name="_method" value="delete" />
+    </form>
+  <% } %>
+
+</div>

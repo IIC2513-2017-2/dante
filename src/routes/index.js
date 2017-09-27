@@ -11,7 +11,7 @@ router.use(async (ctx, next) => {
     signOutPath: ctx.router.url('session.destroy'),
     signInPath: ctx.router.url('session.new'),
     signUpPath: ctx.router.url('users.new'),
-    usersShowPath: user => ctx.router.url('users.show', user.username),
+    userShowPath: user => ctx.router.url('users.show', user.username),
     adminIndexPath: ctx.router.url('admin.index'),
     notice: ctx.flashMessage.notice,
     warning: ctx.flashMessage.warning,

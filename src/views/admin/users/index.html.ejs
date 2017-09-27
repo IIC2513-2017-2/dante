@@ -4,10 +4,10 @@
 
 <p>Actualmente hay <%= userCount %> usuarios. </p>
 
-<a href="<%= userNewPath %>" class="btn">Crear Usuario</a>
+<a href="<%= userNewPath %>" class="btn btn-submit">Nuevo Usuario</a>
 
 <% if (users && users.length) { %>
-  <ul class="table full-width">
+  <ul class="table full-width users-table">
     <% users.forEach(user => { %>
       <%- include('_user-row', { user }) %>
     <% })%>

@@ -1,15 +1,15 @@
 <li class="table-row">
   <div class="table-cell user-gravatar">
-    <img src="<%= user.gravatarUrl(100) %>" alt="<%= user.fullName() %>'s gravatar" />
+    <img src="<%= user.gravatarUrl(100) %>" alt="Gravatar de <%= user.username %>" />
   </div>
   <div class="table-cell">
-    <span class="user-fullname"><%= user.fullName() %></span>
+    <span class="user-fullname"><a href="<%= userShowPath(user) %>"><%= user.fullName() %></a></span>
     <span class="user-username"><%= user.username %></span>
   </div>
-  <div class="table-cell">
-    <%= user.role %>
+  <div class="table-cell user-role">
+    <span><%= user.displayRole() %></span>
   </div>
   <div class="table-cell">
-    <a href="<%= userEditPath(user) %>" class="btn btn-small btn-clear">Editar</a>
+    <a href="<%= userEditPath(user) %>" class="btn btn-small btn-clear">Editar Usuario</a>
   </div>
 </li>

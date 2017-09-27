@@ -198,7 +198,7 @@ form {
   }
 }
 
-input:not([type=submit]), select {
+input:not([type=submit]), select, textarea {
   width: 100%;
   padding: 5px;
   font-family: $sans-serif;
@@ -219,12 +219,13 @@ input:not([type=submit]), select {
   color: white;
   font-size: 12px;
   border: none;
-  border: 0px solid darken($btnBgDefault, 3);
+  border: 1px solid darken($btnBgDefault, 3);
   border-bottom-width: 3px;
   border-radius: 4px;
   margin: 10px 0;
   font-family: $sans-serif;
   text-shadow: 0 0 3px rgba(black,0.2);
+  white-space: nowrap;
 
   &:hover, &:active {
     background-color: lighten($btnBgDefault, 10);

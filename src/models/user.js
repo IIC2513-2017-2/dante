@@ -78,5 +78,9 @@ module.exports = function defineUser(sequelize, DataTypes) {
     return this.role === 'admin';
   };
 
+  User.prototype.displayRole = function displayRole() {
+    return this.role === 'admin' ? 'Administrador' : 'Usuario';
+  };
+
   return User;
 };

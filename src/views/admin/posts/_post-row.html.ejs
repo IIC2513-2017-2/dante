@@ -1,0 +1,15 @@
+<li class="table-row">
+  <div class="table-cell">
+    <span class="post-title"><%= post.title %></span>
+    <span class="post-meta">
+      <img class="post-author-gravatar" src="<%= post.author.gravatarUrl(30) %>" alt="Gravatar de <%=post.author.username %>" />
+      <%= post.author.username %>, <%= post.displayDate() %></span>
+  </div>
+
+  <div class="table-cell">
+    <span class="post-status"><%= post.displayStatus() %></span>
+  </div>
+  <div class="table-cell">
+    <a href="<%= postEditPath(post) %>" class="btn btn-small btn-clear">Editar Post</a>
+  </div>
+</li>

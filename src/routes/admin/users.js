@@ -15,7 +15,7 @@ const setUser = async (ctx, next) => {
   return ctx.redirect(ctx.router.url('admin.users.index'));
 };
 
-// Users Root
+// Users Index
 router.get('admin.users.index', '/', async (ctx) => {
   const usersData = await ctx.orm.User.findAndCountAll();
 

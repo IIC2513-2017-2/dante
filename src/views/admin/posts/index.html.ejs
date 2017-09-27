@@ -1,0 +1,19 @@
+<%- include('../includes/top-layout') %>
+
+<h1 class="page-title">Administración de Posts</h1>
+
+<p>Actualmente hay <%= postsCount %> posts. </p>
+
+<a href="<%= postNewPath %>" class="btn btn-submit">Nuevo Post</a>
+
+<% if (posts && posts.length) { %>
+  <ul class="table full-width posts-table">
+    <% posts.forEach(post => { %>
+      <%- include('_post-row', { post }) %>
+    <% })%>
+  </ul>
+<% } else { %>
+  <p class="empty-notice">No hay posts</p>
+<% } %>
+
+<%- include('../includes/bottom-layout') %>

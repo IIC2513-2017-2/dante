@@ -1,9 +1,11 @@
 const KoaRouter = require('koa-router');
 
 const users = require('./users');
+const posts = require('./posts');
 
 const router = new KoaRouter();
 
+// Administration Filter and helpers
 router.use(async (ctx, next) => {
   if (!(ctx.state.currentUser && ctx.state.currentUser.isAdmin())) {
     ctx.flashMessage.warning = 'No tienes permiso para acceder a la administración';
@@ -25,8 +27,9 @@ router.get('admin.index', '/', async (ctx) => {
   await ctx.render('admin/index');
 });
 
-// Admin Users
+// Admin Models
 router.use('/users', users.routes());
+router.use('/posts', posts.routes());
 
 // router.post('hello', '/', (ctx) => {
 //   console.log(ctx.request.body);
