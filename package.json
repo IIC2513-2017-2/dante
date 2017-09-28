@@ -43,6 +43,8 @@
     "sass-loader": "^6.0.6",
     "sequelize": "^4.6.0",
     "sequelize-cli": "https://github.com/IIC2513-2017-2/sequelize-cli#iic2513-version",
+    "showdown": "^1.7.4",
+    "striptags": "^3.1.0",
     "style-loader": "^0.18.2",
     "webpack": "^3.6.0"
   },

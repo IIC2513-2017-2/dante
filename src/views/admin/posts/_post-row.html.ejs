@@ -1,9 +1,12 @@
 <li class="table-row">
   <div class="table-cell">
-    <span class="post-title"><%= post.title %></span>
-    <span class="post-meta">
-      <img class="post-author-gravatar" src="<%= post.author.gravatarUrl(30) %>" alt="Gravatar de <%=post.author.username %>" />
-      <%= post.author.username %>, <%= post.displayDate() %></span>
+    <div class="post-details">
+      <span class="post-title"><%= post.title %></span>
+      <span class="post-excerpt"><%= post.getExcerpt() %></span>
+      <span class="post-meta">
+        <img class="post-author-gravatar" src="<%= post.author.gravatarUrl(30) %>" alt="Gravatar de <%=post.author.username %>" />
+        <%= post.author.username %>, <%= post.displayDate() %></span>
+    </div>
   </div>
 
   <div class="table-cell">

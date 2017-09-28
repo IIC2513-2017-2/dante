@@ -5,6 +5,10 @@ $sidebarWidth: 200px;
   display: flex;
   align-items: stretch;
 
+  input:not([type=submit]), select, textarea {
+    width: 100%;
+  }
+
   .sidebar {
     width: $sidebarWidth;
     margin: 0 20px;
@@ -98,13 +102,31 @@ $sidebarWidth: 200px;
   }
 
   .posts-table {
+
+    .post-details {
+      max-width: 400px;
+      margin: 10px 0;
+    }
+
     .post-title {
       display: block;
       margin: 5px;
+      font-weight: bold;
+      color: lighten($bodyColor,10);
+    }
+    .post-excerpt {
+      margin: 5px;
+      display: block;
+      overflow: hidden;
+      white-space: nowrap;
+      max-width: 100%;
+      font-size: 14px;
+      text-overflow: ellipsis;
+      color: lighten($bodyColor,20);
     }
     .post-meta, .post-status {
       font-size: 12px;
-      margin: 5px;
+      margin: 10px 5px;
       color: lighten($bodyColor, 50);
     }
     .post-author-gravatar {
@@ -132,5 +154,6 @@ $sidebarWidth: 200px;
     display: block;
     width: 100%;
     min-height: 500px;
+    font-family: $monospace;
   }
 }

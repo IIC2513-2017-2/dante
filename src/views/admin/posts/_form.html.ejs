@@ -14,6 +14,22 @@
       <input type="hidden" name="_method" value="patch" />
     <% } %>
 
+    <div class="form-row form-row-actions">
+      <div class="form-actions-cancel">
+        <a href="<%= adminPostsPath %>" class="btn btn-clear">Volver a los Posts</a>
+      </div>
+
+      <div class="form-actions-submit">
+        <% if (post.isNewRecord) { %>
+          <input class="btn btn-submit" type="submit" name="create" value="Crear Post" />
+          <input class="btn btn-submit" type="submit" name="createPreview" value="Crear y Previsualizar" />
+        <% } else { %>
+          <input class="btn btn-submit" type="submit" name="update" value="Actualizar Post" />
+          <input class="btn btn-submit" type="submit" name="updatePreview" value="Actualizar y Previsualizar" />
+        <% } %>
+      </div>
+    </div>
+
     <div class="form-row">
       <div class="form-row-label">
         <label for="publishDate">Fecha</label>
@@ -63,8 +79,10 @@
       <div class="form-actions-submit">
         <% if (post.isNewRecord) { %>
           <input class="btn btn-submit" type="submit" name="create" value="Crear Post" />
+          <input class="btn btn-submit" type="submit" name="createPreview" value="Crear y Previsualizar" />
         <% } else { %>
           <input class="btn btn-submit" type="submit" name="update" value="Actualizar Post" />
+          <input class="btn btn-submit" type="submit" name="updatePreview" value="Actualizar y Previsualizar" />
           <input class="btn btn-danger" type="submit" name="delete" form="post-delete-form" value="Eliminar Post" />
         <% } %>
       </div>

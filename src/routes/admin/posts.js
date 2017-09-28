@@ -24,11 +24,26 @@ const setPost = async (ctx, next) => {
   return ctx.redirect(ctx.router.url('admin.posts.index'));
 };
 
+// Set post with associations
+const setPostWithAssociations = async (ctx, next) => {
+  const post = await ctx.orm.Post.find({
+    where: { id: ctx.params.id },
+    include: ['author'],
+  });
+  if (post) {
+    ctx.state.post = post;
+    return next();
+  }
+
+  ctx.flashMessage.notice = `No se encontró el post con id ${ctx.params.id}`;
+  return ctx.redirect(ctx.router.url('admin.posts.index'));
+};
+
 // Posts Index
 router.get('admin.posts.index', '/', async (ctx) => {
   const postsData = await ctx.orm.Post.findAndCountAll({
     include: ['author'],
-    attributes: ['id', 'author.username', 'author.email', 'title', 'status', 'publishDate'],
+    attributes: ['id', 'author.username', 'author.email', 'title', 'status', 'body', 'publishDate'],
     order: [['publishDate', 'DESC']],
   });
 
@@ -48,6 +63,14 @@ router.get('admin.posts.new', '/new', setAuthors, async (ctx) => {
   });
 });
 
+router.get('admin.posts.show', '/:id/preview', setPostWithAssociations, async (ctx) => {
+  const { post } = ctx.state;
+  await ctx.render('admin/posts/preview', {
+    post,
+    notice: 'Recuerda que esta es una vista previa del contenido de este post',
+  });
+});
+
 router.get('admin.posts.edit', '/:id/edit', setAuthors, setPost, async (ctx) => {
   const { post } = ctx.state;
   await ctx.render('admin/posts/edit', {
@@ -58,12 +81,15 @@ router.get('admin.posts.edit', '/:id/edit', setAuthors, setPost, async (ctx) => 
 });
 
 router.post('admin.posts.create', '/', setAuthors, async (ctx) => {
-  const { title, bodySource, authorId } = ctx.request.body;
-
+  const { title, bodySource, authorId, create, createPreview } = ctx.request.body;
   try {
-    await ctx.orm.Post.create({ title, bodySource, authorId });
-    ctx.flashMessage.notice = 'Post se ha creado correctamente';
-    ctx.redirect(ctx.router.url('admin.posts.index'));
+    const post = await ctx.orm.Post.create({ title, bodySource, authorId });
+    if (create) {
+      ctx.flashMessage.notice = 'Post se ha creado correctamente';
+      ctx.redirect(ctx.router.url('admin.posts.index'));
+    } else if (createPreview) {
+      ctx.redirect(ctx.router.url('admin.posts.show', { id: post.id }));
+    }
   } catch (validationError) {
     await ctx.render('admin/posts/new', {
       post: ctx.orm.Post.build(ctx.request.body),
@@ -75,7 +101,15 @@ router.post('admin.posts.create', '/', setAuthors, async (ctx) => {
 
 router.patch('admin.posts.update', '/:id', setAuthors, setPost, async (ctx) => {
   const { post, authors } = ctx.state;
-  const { title, authorId, publishDate, bodySource, status } = ctx.request.body;
+  const {
+    title,
+    authorId,
+    publishDate,
+    bodySource,
+    status,
+    update,
+    updatePreview,
+  } = ctx.request.body;
   try {
     await post.update({
       title,
@@ -84,8 +118,13 @@ router.patch('admin.posts.update', '/:id', setAuthors, setPost, async (ctx) => {
       publishDate,
       status,
     });
-    ctx.flashMessage.notice = 'Post actualizado';
-    ctx.redirect(ctx.router.url('admin.posts.index'));
+
+    if (update) {
+      ctx.flashMessage.notice = 'Post actualizado';
+      ctx.redirect(ctx.router.url('admin.posts.edit', { id: post.id }));
+    } else if (updatePreview) {
+      ctx.redirect(ctx.router.url('admin.posts.show', { id: post.id }));
+    }
   } catch (validationError) {
     await ctx.render('admin/posts/edit', {
       post,

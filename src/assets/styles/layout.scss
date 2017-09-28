@@ -1,7 +1,8 @@
 $containerMaxWidth: 900px;
 
 $serif: Palatino, Georgia, Garamond, serif;
-$sans-serif: ---apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+$sans-serif: ---apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+$monospace: Consolas, Monaco, 'Courier New', monospace;
 
 // Base
 * {box-sizing: border-box;}
@@ -11,13 +12,17 @@ html, body {
   padding: 0;
   color: $bodyColor;
   background-color: $bgColor;
-  font-family: $serif;
+  font-family: $sans-serif;
   font-size: 16px;
 }
 
 a, a:visited {
   color: $linkColor;
   text-decoration: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: $sans-serif;
 }
 
 
@@ -40,7 +45,6 @@ a, a:visited {
 
   .session-actions {
     .session-current-user {
-      font-family: $sans-serif;
       font-size: 14px;
       padding: 4px;
       border-radius: 4px;
@@ -73,7 +77,6 @@ a, a:visited {
 
   .brand-description {
     display: inline-block;
-    font-family: $sans-serif;
     color: lighten($bodyColor, 40);
     font-style: italic;
     font-size: 14px;
@@ -95,7 +98,6 @@ a, a:visited {
   border-style: solid;
   border-radius: 2px;
   border-width: 1px;
-  font-family: $sans-serif;
   font-size: 14px;
 
   p {
@@ -161,9 +163,6 @@ a, a:visited {
   }
 }
 
-form {
-  font-family: $sans-serif;
-}
 
 .form-row {
   display: flex;
@@ -199,9 +198,7 @@ form {
 }
 
 input:not([type=submit]), select, textarea {
-  width: 100%;
   padding: 5px;
-  font-family: $sans-serif;
   font-size: 14px;
   border-radius: 3px;
   border: 1px solid lighten($bodyColor, 70);

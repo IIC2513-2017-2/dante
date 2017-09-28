@@ -1,4 +1,4 @@
-$bgColorFactor: 253;
+$bgColorFactor: 254;
 $bgColor: rgb($bgColorFactor, $bgColorFactor, $bgColorFactor);
 
 $bodyColorFactor: 30;
@@ -7,6 +7,8 @@ $bodyColor: rgb($bodyColorFactor, $bodyColorFactor, $bodyColorFactor);
 $headerShadow: rgba(100,100,100,0.4);
 
 $linkColor: black;
+$postLinkColor: rgb(10, 118, 208);
+$postLinkColorHover: darken($postLinkColor, 20);
 
 $noticeBgColor: rgb(224, 249, 255);
 $noticeBorderColor: darken($noticeBgColor, 5);

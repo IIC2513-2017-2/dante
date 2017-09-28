@@ -1,4 +1,16 @@
 const moment = require('moment');
+const showdown = require('showdown');
+const striptags = require('striptags');
+
+const converter = new showdown.Converter({
+  rawHeaderId: true,
+});
+
+function renderMarkdown(instance) {
+  if (instance.changed('bodySource')) {
+    instance.set('body', converter.makeHtml(instance.bodySource));
+  }
+}
 
 module.exports = function definePost(sequelize, DataTypes) {
   const Post = sequelize.define('Post', {
@@ -9,10 +21,10 @@ module.exports = function definePost(sequelize, DataTypes) {
       },
     },
     body: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
     },
     bodySource: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
     },
     status: {
       type: DataTypes.STRING,
@@ -26,9 +38,7 @@ module.exports = function definePost(sequelize, DataTypes) {
     publishDate: {
       type: DataTypes.DATE,
       defaultValue() {
-        const todayValue = moment().startOf('day').utc().toDate();
-        console.log(todayValue);
-        return todayValue;
+        return moment().startOf('day').utc().toDate();
       },
       allowNull: false,
     },
@@ -36,6 +46,9 @@ module.exports = function definePost(sequelize, DataTypes) {
       type: DataTypes.INTEGER,
     },
   });
+
+  Post.beforeUpdate(renderMarkdown);
+  Post.beforeCreate(renderMarkdown);
 
   Post.associate = function associate(models) {
     Post.belongsTo(models.User, { as: 'author', foreignKey: 'authorId' });
@@ -51,6 +64,12 @@ module.exports = function definePost(sequelize, DataTypes) {
 
   Post.prototype.displayStatus = function displayStatus() {
     return this.status === 'draft' ? 'Borrador' : 'Publicado';
+  };
+
+  Post.prototype.getExcerpt = function getExcerpt(length = 80) {
+    const excerpt = striptags(this.body).replace(/(\r\n|\n|\r)+/gm, ' ')
+      .substring(0, length).trim();
+    return excerpt.length ? `${excerpt}…` : 'Sin contenido';
   };
 
   return Post;

@@ -66,6 +66,7 @@ app.use(koaFlashMessage);
 app.use(koaBody({
   multipart: true,
   keepExtensions: true,
+  formLimit: '512kb',
 }));
 
 app.use((ctx, next) => {
