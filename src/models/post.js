@@ -62,6 +62,10 @@ module.exports = function definePost(sequelize, DataTypes) {
     return moment.utc(this.publishDate).locale('es').format('LL');
   };
 
+  Post.prototype.isPublished = function isPublished() {
+    return this.status === 'published';
+  };
+
   Post.prototype.displayStatus = function displayStatus() {
     return this.status === 'draft' ? 'Borrador' : 'Publicado';
   };

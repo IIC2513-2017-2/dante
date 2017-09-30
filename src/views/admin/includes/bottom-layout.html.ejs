@@ -1,4 +1,4 @@
     </div> <%# .admint-content %>
-    <%- include('../sidebar') %>
+    <% if (!locals.hideSidebar) { %> <%- include('../sidebar') %> <% } %>
   </section> <%# .admin-container %>
 </div> <%# .container %>

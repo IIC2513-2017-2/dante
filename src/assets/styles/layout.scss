@@ -28,6 +28,10 @@ h1, h2, h3, h4, h5, h6 {
 
 // Layout
 
+#main-content {
+  min-height: 300px;
+}
+
 #main-header {
   box-shadow: 0 -1px 3px $headerShadow;
   padding: 15px 0;
@@ -92,7 +96,7 @@ h1, h2, h3, h4, h5, h6 {
 // Flash messages
 
 .flashMessage, .error, .errors, .warning {
-  margin: 10px;
+  margin: 10px 0;
   padding: 5px;
   text-align: center;
   border-style: solid;
@@ -127,6 +131,63 @@ h1, h2, h3, h4, h5, h6 {
     padding: 10px 20px;
   }
 }
+
+// Main Navigation
+
+#main-nav {
+  margin: 30px 0 40px;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  font-size: 12px;
+  color: lighten($bodyColor, 30);
+  font-weight: lighter;
+
+  ul {
+    list-style: none;
+    padding: 0;
+    text-align: center;
+
+    li {
+      display: inline-block;
+      margin: 0 10px;
+      transition: all 0.1s ease-in-out;
+
+      a {
+        color: inherit;
+        padding-bottom: 3px;
+        border-bottom: 1px solid lighten($bodyColor, 80);
+        transition: all 0.3s ease-in-out;
+
+      }
+
+      &:hover {
+        color: $bodyColor;
+        a { border-color: lighten($bodyColor, 40); }
+      }
+    }
+  }
+}
+
+#main-footer {
+  background-color: $footerBgColor;
+  padding: 20px 0;
+  min-height: 225px;
+  margin-top: 100px;
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  color: $footerColor;
+  font-size: 14px;
+  box-shadow: 0 5px 15px rgba($bodyColor, 0.02) inset;
+  border-top: 1px solid lighten($bodyColor, 80);
+
+  a {
+    color: inherit;
+    text-decoration: underline;
+  }
+}
+
 // Table layout
 
 .table {
@@ -153,6 +214,10 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 10px;
   margin: 30px auto;
   padding: 10px 20px;
+
+  input:not([type=submit]), select, textarea {
+    width: 100%;
+  }
 }
 
 
@@ -269,5 +334,18 @@ input:not([type=submit]), select, textarea {
   &.btn-small {
     font-size: 10px;
     padding: 3px 6px;
+  }
+}
+
+.badge {
+  text-transform: uppercase;
+  font-size: 10px;
+  padding: 3px 10px;
+  background: $badgeBgColor;
+  color: $badgeColor;
+  border-radius: 30px;
+
+  &.badge-notice {
+    background-color: $btnBgSubmit;
   }
 }

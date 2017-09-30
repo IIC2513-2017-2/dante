@@ -38,7 +38,7 @@ $sidebarWidth: 200px;
 
   .admin-content {
     flex: auto;
-    padding: 0 20px;
+    padding: 0;
     order: 0;
   }
 
@@ -137,6 +137,8 @@ $sidebarWidth: 200px;
 
   }
 
+  // Posts form
+
   .form-post-content {
     margin-top: 20px;
   }
@@ -156,4 +158,28 @@ $sidebarWidth: 200px;
     min-height: 500px;
     font-family: $monospace;
   }
+
+  // Post preview
+  .post-preview-bar {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 10px;
+    border-bottom: 2px solid lighten($bodyColor, 80);
+    text-align: center;
+
+    & > div {
+      flex-grow: 1;
+      flex-basis: 0;
+
+      &:first-child {
+        text-align: left;
+      }
+
+      &:last-child {
+        text-align: right;
+      }
+    }
+  }
+
 }

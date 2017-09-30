@@ -2,6 +2,10 @@
 
 Teacher assistant project made using [Template](#Template)
 
+## Contribution
+
+Contribution is encouraged! Feel free to open issues and pull requests.
+
 ## Database Setup
 
 Follow same instructions as below, but create corresponding database with this
@@ -10,6 +14,8 @@ project's name.
 ```sh
 createdb dante_dev
 ```
+---
+> From this point below are legacy Template instructions
 
 # Template
 

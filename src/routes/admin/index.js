@@ -17,6 +17,7 @@ router.use(async (ctx, next) => {
     adminUsersPath: router.url('admin.users.index'),
     adminPostsPath: router.url('admin.posts.index'),
     adminTeamsPath: router.url('admin.teams.index'),
+    isAdminPath: true,
   });
 
   return next();

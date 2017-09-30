@@ -50,7 +50,7 @@ router.post('users.create', '/',
   checkLoggedIn('Para registrar una cuenta debes cerrar sesión'),
   async (ctx) => {
     try {
-      const user = await ctx.orm.User.create(ctx.request.body);
+      const user = await ctx.orm.User.create(ctx.request.body); // TODO: fix this
       ctx.flashMessage.notice = `Usuario ${user.username} se ha creado correctamente`;
       ctx.session.userId = user.id;
       ctx.redirect(ctx.router.url('users.show', user.username));

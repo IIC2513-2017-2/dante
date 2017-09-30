@@ -52,6 +52,8 @@ router.get('admin.posts.index', '/', async (ctx) => {
     postsCount: postsData.count,
     postNewPath: ctx.router.url('admin.posts.new'),
     postEditPath: post => ctx.router.url('admin.posts.edit', { id: post.id }),
+    previewPostPath: post => ctx.router.url('admin.posts.show', { id: post.id }),
+    publishedPostPath: post => ctx.router.url('posts.show', { id: post.id }),
   });
 });
 
@@ -68,6 +70,8 @@ router.get('admin.posts.show', '/:id/preview', setPostWithAssociations, async (c
   await ctx.render('admin/posts/preview', {
     post,
     notice: 'Recuerda que esta es una vista previa del contenido de este post',
+    postEditPath: ctx.router.url('admin.posts.edit', { id: post.id }),
+    publishedPostPath: () => ctx.router.url('posts.show', { id: post.id }),
   });
 });
 

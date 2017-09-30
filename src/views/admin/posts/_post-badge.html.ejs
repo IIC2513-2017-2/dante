@@ -1,0 +1,7 @@
+<% const postPublished = post.isPublished(); %>
+<% const statusBadge = `<span class="badge ${postPublished ? 'badge-notice': ''}">${post.displayStatus()}</span>`; %>
+<% if (postPublished) { %>
+  <a href="<%= publishedPostPath(post) %>"><%- statusBadge %></a>
+<% } else { %>
+  <%- statusBadge %>
+<% } %>

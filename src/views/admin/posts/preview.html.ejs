@@ -1,1 +1,17 @@
+<%- include('../includes/top-layout') %>
+
+<div class="post-preview-bar">
+  <div>
+    <a href="<%= adminPostsPath %>" class="btn btn-clear">Volver a los Posts</a>
+  </div>
+  <div>
+    <%- include('_post-badge') %>
+  </div>
+  <div>
+    <a href="<%= postEditPath %>" class="btn btn-submit">Editar Post</a>
+  </div>
+</div>
+
 <%- include('../../posts/show') %>
+
+<%- include('../includes/bottom-layout', { hideSidebar: true }) %>

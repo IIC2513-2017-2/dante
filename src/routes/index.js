@@ -12,6 +12,8 @@ router.use(async (ctx, next) => {
     signInPath: ctx.router.url('session.new'),
     signUpPath: ctx.router.url('users.new'),
     userShowPath: user => ctx.router.url('users.show', user.username),
+    postIndexPath: ctx.router.url('posts.index'),
+    postShowPath: post => ctx.router.url('posts.show', post.id),
     adminIndexPath: ctx.router.url('admin.index'),
     notice: ctx.flashMessage.notice,
     warning: ctx.flashMessage.warning,

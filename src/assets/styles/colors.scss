@@ -25,3 +25,12 @@ $warningColor: darken($warningBgColor, 70);
 $btnBgDefault: rgb(0, 151, 191);
 $btnBgSubmit: rgb(0, 191, 94);
 $btnBgDanger: rgb(219, 36, 107);
+
+$footerBgColorFactor: 240;
+$footerBgColor: rgb($footerBgColorFactor, $footerBgColorFactor, $footerBgColorFactor);
+$footerColorFactor: 100;
+$footerColor: rgb($footerColorFactor, $footerColorFactor, $footerColorFactor);
+
+$badgeColor: white;
+$badgeBgColorFactor: 200;
+$badgeBgColor: rgb($badgeBgColorFactor, $badgeBgColorFactor, $badgeBgColorFactor);

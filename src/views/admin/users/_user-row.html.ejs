@@ -7,9 +7,9 @@
     <span class="user-username"><%= user.username %></span>
   </div>
   <div class="table-cell user-role">
-    <span><%= user.displayRole() %></span>
+    <span class="badge"><%= user.displayRole() %></span>
   </div>
   <div class="table-cell">
-    <a href="<%= userEditPath(user) %>" class="btn btn-small btn-clear">Editar Usuario</a>
+    <a href="<%= userEditPath(user) %>" class="btn btn-small">Editar Usuario</a>
   </div>
 </li>
