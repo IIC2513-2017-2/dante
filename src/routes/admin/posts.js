@@ -87,18 +87,21 @@ router.get('admin.posts.edit', '/:id/edit', setAuthors, setPost, async (ctx) => 
 });
 
 router.post('admin.posts.create', '/', setAuthors, async (ctx) => {
-  const { title, bodySource, authorId, create, createPreview } = ctx.request.body;
+  const { authors } = ctx.state;
+  const { create, createPreview, ...postFields } = ctx.request.body;
+  const post = await ctx.orm.Post.build(postFields);
   try {
-    const post = await ctx.orm.Post.create({ title, bodySource, authorId });
+    await post.save({ fields: ['title', 'bodySource', 'authorId', 'publishDate'] });
     if (create) {
       ctx.flashMessage.notice = 'Post se ha creado correctamente';
-      ctx.redirect(ctx.router.url('admin.posts.index'));
+      ctx.redirect(ctx.router.url('admin.posts.edit', { id: post.id }));
     } else if (createPreview) {
       ctx.redirect(ctx.router.url('admin.posts.show', { id: post.id }));
     }
   } catch (validationError) {
     await ctx.render('admin/posts/new', {
-      post: ctx.orm.Post.build(ctx.request.body),
+      post,
+      authors,
       errors: validationError.errors,
       submitPostPath: ctx.router.url('admin.posts.create'),
     });

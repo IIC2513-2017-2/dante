@@ -46,7 +46,7 @@
       <div class="form-row-control">
         <select name="authorId" id="authorId">
           <% authors.forEach(author => { %>
-            <option value="<%= author.id %>"  <%= post.authorId === author.id ? 'selected' : '' %> ><%= `${author.fullName()} (${author.username})`%></option>
+            <option value="<%= author.id %>" <%= post.authorId == author.id ? 'selected' : '' %> ><%= `${author.fullName()} (${author.username})`%></option>
           <% }) %>
         </select>
       </div>
