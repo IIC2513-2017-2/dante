@@ -49,14 +49,17 @@ router.get('users.new', '/register',
 router.post('users.create', '/',
   checkLoggedIn('Para registrar una cuenta debes cerrar sesión'),
   async (ctx) => {
+    const user = await ctx.orm.User.build(ctx.request.body);
     try {
-      const user = await ctx.orm.User.create(ctx.request.body); // TODO: fix this
+      await user.save({
+        fields: ['firstName', 'lastName', 'password', 'email', 'username'],
+      });
       ctx.flashMessage.notice = `Usuario ${user.username} se ha creado correctamente`;
       ctx.session.userId = user.id;
-      ctx.redirect(ctx.router.url('users.show', user.username));
+      ctx.redirect(ctx.router.url('users.show', { username: user.username }));
     } catch (validationError) {
       await ctx.render('users/new', {
-        user: ctx.orm.User.build(ctx.request.body),
+        user,
         errors: validationError.errors,
         submitUserPath: ctx.router.url('users.create'),
       });
