@@ -110,22 +110,10 @@ router.post('admin.posts.create', '/', setAuthors, async (ctx) => {
 
 router.patch('admin.posts.update', '/:id', setAuthors, setPost, async (ctx) => {
   const { post, authors } = ctx.state;
-  const {
-    title,
-    authorId,
-    publishDate,
-    bodySource,
-    status,
-    update,
-    updatePreview,
-  } = ctx.request.body;
+  const { update, updatePreview, ...postFields } = ctx.request.body;
   try {
-    await post.update({
-      title,
-      authorId,
-      bodySource,
-      publishDate,
-      status,
+    await post.update(postFields, {
+      fields: ['title', 'authorId', 'bodySource', 'body', 'publishDate', 'status'],
     });
 
     if (update) {

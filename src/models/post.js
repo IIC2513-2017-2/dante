@@ -6,9 +6,10 @@ const converter = new showdown.Converter({
   rawHeaderId: true,
 });
 
-function renderMarkdown(instance) {
-  if (instance.changed('bodySource')) {
-    instance.set('body', converter.makeHtml(instance.bodySource));
+function renderMarkdown(post) {
+  if (post.changed('bodySource')) {
+    post.setDataValue('body', converter.makeHtml(post.bodySource));
+    // setDataValue sets property skipping setter (empty setter, look below)
   }
 }
 
@@ -22,6 +23,9 @@ module.exports = function definePost(sequelize, DataTypes) {
     },
     body: {
       type: DataTypes.TEXT,
+      set() {
+        // do nothing.
+      },
     },
     bodySource: {
       type: DataTypes.TEXT,
