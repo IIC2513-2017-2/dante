@@ -45,13 +45,16 @@ router.get('admin.users.edit', '/:id/edit', setUser, async (ctx) => {
 });
 
 router.post('admin.users.create', '/', async (ctx) => {
+  const user = await ctx.orm.User.build(ctx.request.body);
   try {
-    const user = await ctx.orm.User.create(ctx.request.body);
+    await user.save({
+      fields: ['firstName', 'lastName', 'password', 'email', 'username', 'role'],
+    });
     ctx.flashMessage.notice = `Usuario ${user.username} se ha creado correctamente`;
     ctx.redirect(ctx.router.url('admin.users.index'));
   } catch (validationError) {
     await ctx.render('admin/users/new', {
-      user: ctx.orm.User.build(ctx.request.body),
+      user,
       errors: validationError.errors,
       submitUserPath: ctx.router.url('admin.users.create'),
     });
@@ -60,14 +63,15 @@ router.post('admin.users.create', '/', async (ctx) => {
 
 router.patch('admin.users.update', '/:id', setUser, async (ctx) => {
   const { user } = ctx.state;
-
-  const filteredParams = Object.assign({}, ctx.request.body);
-  if (!filteredParams.password.length) {
-    delete filteredParams.password;
+  const passwordField = [];
+  if (ctx.request.body.password.length) {
+    passwordField.push('password');
   }
 
   try {
-    await user.update(filteredParams);
+    await user.update(ctx.request.body, {
+      fields: [...passwordField, 'firstName', 'lastName', 'email', 'username', 'role'],
+    });
     ctx.flashMessage.notice = 'Usuario actualizado';
     ctx.redirect(ctx.router.url('admin.users.index'));
   } catch (validationError) {
