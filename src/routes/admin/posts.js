@@ -1,5 +1,4 @@
 const KoaRouter = require('koa-router');
-const moment = require('moment');
 
 const router = new KoaRouter();
 
@@ -59,8 +58,10 @@ router.get('admin.posts.index', '/', async (ctx) => {
 
 router.get('admin.posts.new', '/new', setAuthors, async (ctx) => {
   const post = await ctx.orm.Post.build();
+  const { authors } = ctx.state;
   await ctx.render('admin/posts/new', {
     post,
+    authors,
     submitPostPath: ctx.router.url('admin.posts.create'),
   });
 });
@@ -76,9 +77,10 @@ router.get('admin.posts.show', '/:id/preview', setPostWithAssociations, async (c
 });
 
 router.get('admin.posts.edit', '/:id/edit', setAuthors, setPost, async (ctx) => {
-  const { post } = ctx.state;
+  const { post, authors } = ctx.state;
   await ctx.render('admin/posts/edit', {
     post,
+    authors,
     submitPostPath: ctx.router.url('admin.posts.update', { id: post.id }),
     deletePostPath: ctx.router.url('admin.posts.destroy', { id: post.id }),
   });
