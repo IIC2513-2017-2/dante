@@ -90,10 +90,10 @@ router.del('admin.users.destroy', '/:id', setUser, async (ctx) => {
     await user.destroy();
     ctx.flashMessage.notice = 'Usuario eliminado';
     ctx.redirect(ctx.router.url('admin.users.index'));
-  } catch (validationError) {
+  } catch (error) {
     await ctx.render('admin/users/edit', {
       user,
-      errors: validationError.errors,
+      errors: Array.isArray(error) ? error : [error],
       submitUserPath: ctx.router.url('admin.users.update', { id: user.id }),
       deleteUserPath: ctx.router.url('admin.users.destroy', { id: user.id }),
     });
