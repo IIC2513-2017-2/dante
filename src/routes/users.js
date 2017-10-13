@@ -22,7 +22,8 @@ const checkLoggedOut = message => async (ctx, next) => {
   return next();
 };
 
-router.get('users.show', '/profile/:username',
+router.get(
+  'users.show', '/profile/:username',
   checkLoggedOut('Debes registrarte para ver los perfiles de usuario'),
   async (ctx) => {
     const { username } = ctx.params;
@@ -35,7 +36,8 @@ router.get('users.show', '/profile/:username',
   },
 );
 
-router.get('users.new', '/register',
+router.get(
+  'users.new', '/register',
   checkLoggedIn('Para registrar una cuenta debes cerrar sesión'),
   async (ctx) => {
     const user = await ctx.orm.User.build();
@@ -46,7 +48,8 @@ router.get('users.new', '/register',
   },
 );
 
-router.post('users.create', '/',
+router.post(
+  'users.create', '/',
   checkLoggedIn('Para registrar una cuenta debes cerrar sesión'),
   async (ctx) => {
     const user = await ctx.orm.User.build(ctx.request.body);
