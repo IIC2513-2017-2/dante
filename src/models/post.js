@@ -1,6 +1,7 @@
 const moment = require('moment');
 const showdown = require('showdown');
 const striptags = require('striptags');
+const slugify = require('slugify');
 
 const converter = new showdown.Converter({
   rawHeaderId: true,
@@ -10,6 +11,15 @@ function renderMarkdown(post) {
   if (post.changed('bodySource')) {
     post.setDataValue('body', converter.makeHtml(post.bodySource));
     // setDataValue sets property skipping setter (empty setter, look below)
+  }
+}
+
+function slugifyTitle(post) {
+  if (!post.getDataValue('slug')) {
+    post.setDataValue('slug', slugify(`${post.title} ${post.id}`, {
+      replacement: '-',
+      lower: true,
+    }));
   }
 }
 
@@ -23,12 +33,18 @@ module.exports = function definePost(sequelize, DataTypes) {
     },
     body: {
       type: DataTypes.TEXT,
-      set() {
-        // do nothing.
-      },
+      set() {},
     },
     bodySource: {
       type: DataTypes.TEXT,
+    },
+    slug: {
+      type: DataTypes.STRING,
+      set() {},
+      get() {
+        slugifyTitle(this);
+        return this.getDataValue('slug');
+      },
     },
     status: {
       type: DataTypes.STRING,
@@ -49,13 +65,31 @@ module.exports = function definePost(sequelize, DataTypes) {
     authorId: {
       type: DataTypes.INTEGER,
     },
+  }, {
+    scopes: {
+      published: {
+        where: {
+          status: 'published',
+        },
+      },
+    },
   });
 
   Post.beforeUpdate(renderMarkdown);
   Post.beforeCreate(renderMarkdown);
+  Post.beforeUpdate(slugifyTitle);
+  Post.afterCreate(slugifyTitle);
 
   Post.associate = function associate(models) {
     Post.belongsTo(models.User, { as: 'author', foreignKey: 'authorId' });
+  };
+
+  Post.findBySlug = function findBySlug(slug, options) {
+    return Post.find({ where: { slug }, ...options });
+  };
+
+  Post.findPublishedBySlug = function findBySlug(slug, options) {
+    return Post.scope('published').find({ where: { slug }, ...options });
   };
 
   Post.prototype.inputDate = function inputDate() {

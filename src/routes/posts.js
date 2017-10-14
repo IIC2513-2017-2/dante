@@ -14,21 +14,32 @@ const router = new KoaRouter();
 // };
 
 const setPostWithAssociations = async (ctx, next) => {
-  const post = await ctx.orm.Post.findById(ctx.params.id, { include: ['author'] });
+  const post = await ctx.orm.Post.findPublishedBySlug(ctx.params.slug, {
+    include: ['author'],
+  });
   if (post) {
     ctx.state.post = post;
     return next();
   }
 
-  ctx.flashMessage.notice = `No se encontró el post con id ${ctx.params.id}`;
-  return ctx.redirect(ctx.router.url('admin.posts.index'));
+  const postById = Number.isInteger(Number(ctx.params.slug))
+    && await ctx.orm.Post.findById(ctx.params.slug, {
+      where: { status: 'published' },
+      include: ['author'],
+    });
+  if (postById) {
+    return ctx.redirect(ctx.router.url('posts.show', { slug: postById.slug }));
+  }
+
+  ctx.flashMessage.notice = 'No se encontró el post';
+  return ctx.redirect(ctx.router.url('posts.index'));
 };
 
 router.get('posts.index', '/', async (ctx) => {
   await ctx.render('posts/index', {});
 });
 
-router.get('posts.show', '/:id', setPostWithAssociations, async (ctx) => {
+router.get('posts.show', '/:slug', setPostWithAssociations, async (ctx) => {
   const { post } = ctx.state;
   await ctx.render('posts/show', { post });
 });

@@ -25,10 +25,10 @@ const setPost = async (ctx, next) => {
 
 // Set post with associations
 const setPostWithAssociations = async (ctx, next) => {
-  const post = await ctx.orm.Post.find({
-    where: { id: ctx.params.id },
+  const post = await ctx.orm.Post.findById(ctx.params.id, {
     include: ['author'],
   });
+
   if (post) {
     ctx.state.post = post;
     return next();
@@ -42,7 +42,7 @@ const setPostWithAssociations = async (ctx, next) => {
 router.get('admin.posts.index', '/', async (ctx) => {
   const postsData = await ctx.orm.Post.findAndCountAll({
     include: ['author'],
-    attributes: ['id', 'author.username', 'author.email', 'title', 'status', 'body', 'publishDate'],
+    attributes: ['id', 'author.username', 'author.email', 'title', 'status', 'body', 'publishDate', 'slug'],
     order: [['publishDate', 'DESC']],
   });
 
@@ -52,7 +52,7 @@ router.get('admin.posts.index', '/', async (ctx) => {
     postNewPath: ctx.router.url('admin.posts.new'),
     postEditPath: post => ctx.router.url('admin.posts.edit', { id: post.id }),
     previewPostPath: post => ctx.router.url('admin.posts.show', { id: post.id }),
-    publishedPostPath: post => ctx.router.url('posts.show', { id: post.id }),
+    publishedPostPath: post => ctx.router.url('posts.show', { slug: post.slug }),
   });
 });
 
@@ -72,7 +72,7 @@ router.get('admin.posts.show', '/:id/preview', setPostWithAssociations, async (c
     post,
     notice: 'Recuerda que esta es una vista previa del contenido de este post',
     postEditPath: ctx.router.url('admin.posts.edit', { id: post.id }),
-    publishedPostPath: () => ctx.router.url('posts.show', { id: post.id }),
+    publishedPostPath: () => ctx.router.url('posts.show', { slug: post.slug }),
   });
 });
 
@@ -91,7 +91,7 @@ router.post('admin.posts.create', '/', setAuthors, async (ctx) => {
   const { create, createPreview, ...postFields } = ctx.request.body;
   const post = await ctx.orm.Post.build(postFields);
   try {
-    await post.save({ fields: ['title', 'bodySource', 'authorId', 'publishDate'] });
+    await post.save({ fields: ['title', 'bodySource', 'authorId', 'publishDate', 'slug'] });
     if (create) {
       ctx.flashMessage.notice = 'Post se ha creado correctamente';
       ctx.redirect(ctx.router.url('admin.posts.edit', { id: post.id }));
@@ -113,7 +113,7 @@ router.patch('admin.posts.update', '/:id', setAuthors, setPost, async (ctx) => {
   const { update, updatePreview, ...postFields } = ctx.request.body;
   try {
     await post.update(postFields, {
-      fields: ['title', 'authorId', 'bodySource', 'body', 'publishDate', 'status'],
+      fields: ['title', 'authorId', 'bodySource', 'body', 'publishDate', 'status', 'slug'],
     });
 
     if (update) {
