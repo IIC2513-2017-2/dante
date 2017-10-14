@@ -1,32 +1,27 @@
-.post-show {
+.posts-index, .post-show {
   max-width: 600px;
   margin: 0 auto;
+}
 
-  a, a:visited {
-    padding-bottom: 1px;
-    color: $postLinkColor;
-    text-decoration: underline;
-    // border-bottom: 1px solid transparent;
-    transition: all 0.2s ease-in-out;
-
-    &:hover {
-      color: $postLinkColorHover;
-      // border-bottom-color: $postLinkColorHover;
-    }
-  }
+.post-item {
+  margin: 60px 0;
 
   .post-header {
-    text-align: center;
-    margin: 40px 0;
-    padding: 10px 30px;
+    margin: 10px 0;
     border-bottom: 1px solid lighten($bodyColor, 80);
+
+    h2 {
+      margin: 10px 0;
+    }
   }
 
   .post-meta {
     display: inline-block;
     color: lighten($bodyColor, 40);
     font-size: 14px;
-    margin: 30px;
+    margin: 30px 0;
+
+    a { color: inherit; }
   }
 
   .post-author-gravatar {
@@ -35,36 +30,71 @@
     border-radius: 50%;
   }
 
-  .post-title {
-    font-size: 40px;
-    margin: 0;
-  }
-
   .post-body {
-    line-height: 1.8;
-    font-family: $serif;
-    font-size: 18px;
-  }
-
-
-  blockquote {
-    color: lighten($bodyColor, 30);
-    border-left: 8px solid lighten($bodyColor, 80);
-    margin: 30px 40px;
-    padding: 5px 40px;
-  }
-
-  pre, code {
-    border-radius: 3px;
-    background-color: lighten(black, 96);
+    line-height: 1.5;
+    font-family: $sans-serif;
     font-size: 16px;
-  }
-  code {
-    padding: 2px 5px;
+
+    a, a:visited {
+      padding-bottom: 1px;
+      color: $postLinkColor;
+      text-decoration: underline;
+      // border-bottom: 1px solid transparent;
+      transition: all 0.2s ease-in-out;
+
+      &:hover {
+        color: $postLinkColorHover;
+        // border-bottom-color: $postLinkColorHover;
+      }
+    }
   }
 
-  pre {
-    padding: 15px;
-    overflow: auto;
+
+
+  &.post-show {
+    margin: 0 auto;
+
+    .post-header {
+      text-align: center;
+      margin: 40px 0;
+      padding: 10px 30px;
+      border-bottom: 1px solid lighten($bodyColor, 80);
+    }
+
+    .post-body {
+      line-height: 1.8;
+      font-family: $serif;
+      font-size: 18px;
+    }
+
+    .post-meta {
+      margin: 30px;
+    }
+
+    .post-title {
+      font-size: 40px;
+      margin: 0;
+    }
+
+    blockquote {
+      color: lighten($bodyColor, 30);
+      border-left: 8px solid lighten($bodyColor, 80);
+      margin: 30px 40px;
+      padding: 5px 40px;
+    }
+
+    pre, code {
+      border-radius: 3px;
+      background-color: lighten(black, 96);
+      font-size: 16px;
+    }
+    code {
+      padding: 2px 5px;
+    }
+
+    pre {
+      padding: 15px;
+      overflow: auto;
+    }
   }
 }

@@ -1,1 +1,9 @@
-<h1 class="page-title">Posts</h1>
+<section class="posts-index">
+  <h1 class="page-title">Posts <%= page > 1 ? `— Página ${page}`: '' %></h1>
+
+  <% posts.forEach(post => { %>
+    <%- include('_post', { post }) %>
+  <% }) %>
+
+  <%- include('../paginate', { page, pages, pagePath }) %>
+</section>
