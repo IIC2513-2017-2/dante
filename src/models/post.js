@@ -58,7 +58,7 @@ module.exports = function definePost(sequelize, DataTypes) {
     publishDate: {
       type: DataTypes.DATE,
       defaultValue() {
-        return moment().startOf('day').utc().toDate();
+        return moment().toDate();
       },
       allowNull: false,
     },
@@ -92,7 +92,7 @@ module.exports = function definePost(sequelize, DataTypes) {
     return Post.scope('published').find({ where: { slug }, ...options });
   };
 
-  Post.findPublishedPaginated = function findPublishedPaginated(page, limit = 10, options) {
+  Post.findPublishedPaginated = function findPublishedPaginated(page = 1, limit = 10, options) {
     const offset = (page - 1) * limit;
     return Post.findAndCount({
       where: { status: 'published' },
@@ -104,11 +104,11 @@ module.exports = function definePost(sequelize, DataTypes) {
   };
 
   Post.prototype.inputDate = function inputDate() {
-    return moment.utc(this.publishDate).format('YYYY-MM-DD');
+    return moment(this.publishDate).format('YYYY-MM-DDTHH:mm');
   };
 
   Post.prototype.displayDate = function inputDate() {
-    return moment.utc(this.publishDate).locale('es').format('LL');
+    return moment(this.publishDate).locale('es').format('LL');
   };
 
   Post.prototype.isPublished = function isPublished() {

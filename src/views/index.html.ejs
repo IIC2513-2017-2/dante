@@ -1,5 +1,2 @@
-<h1>Hello world</h1>
-<p>
-  App web version
-  <%= appVersion %>
-</p>
+<h1>Último post</h1>
+<%- include('posts/_post', { post: latestPost }) %>

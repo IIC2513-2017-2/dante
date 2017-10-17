@@ -13,7 +13,7 @@ router.use(async (ctx, next) => {
     signUpPath: ctx.router.url('users.new'),
     userShowPath: user => ctx.router.url('users.show', user.username),
     postIndexPath: ctx.router.url('posts.index'),
-    postShowPath: post => ctx.router.url('posts.show', post.id),
+    postShowPath: post => ctx.router.url('posts.show', { slug: post.slug }),
     adminIndexPath: ctx.router.url('admin.index'),
     notice: ctx.flashMessage.notice,
     warning: ctx.flashMessage.warning,
@@ -22,7 +22,12 @@ router.use(async (ctx, next) => {
 });
 
 router.get('index', '/', async (ctx) => {
-  await ctx.render('index', { appVersion: pkg.version });
+  const [latestPost] = (await ctx.orm.Post.findPublishedPaginated(1, 1, {
+    include: ['author'],
+  })).rows;
+  await ctx.render('index', {
+    latestPost,
+  });
 });
 
 module.exports = router;
