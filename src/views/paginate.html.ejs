@@ -1,3 +1,19 @@
-<% for(let i = 1; i <= pages; i++) { %>
-  <a href="<%- pagePath(i) %>"><%= i %></a>
-<% } %>
+<div class="pagination">
+  <div class="pagination-link previous">
+    <% if (page > 1) { %>
+      <a href="<%- pagePath(page - 1) %>"><span class="icon">←</span> Página Anterior</a>
+    <% } %>
+  </div>
+
+  <div>
+    <% if (pages > 1) { %>
+      <span class="current badge">Página <%= `${page} de ${pages}` %></span>
+    <% } %>
+  </div>
+
+  <div class="pagination-link next">
+    <% if (page < pages) { %>
+      <a href="<%- pagePath(page + 1) %>">Página Siguiente <span class="icon">→</span></a>
+    <% } %>
+  </div>
+</div>

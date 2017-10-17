@@ -4,6 +4,8 @@ $serif: Palatino, Georgia, Garamond, serif;
 $sans-serif: ---apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
 $monospace: Consolas, Monaco, 'Courier New', monospace;
 
+$default-transition: all 0.3s ease-in-out;
+
 // Base
 * {box-sizing: border-box;}
 
@@ -156,8 +158,7 @@ h1, h2, h3, h4, h5, h6 {
         color: inherit;
         padding-bottom: 3px;
         border-bottom: 1px solid lighten($bodyColor, 80);
-        transition: all 0.3s ease-in-out;
-
+        transition: $default-transition;
       }
 
       &:hover {
@@ -347,5 +348,59 @@ input:not([type=submit]), select, textarea {
 
   &.badge-notice {
     background-color: $btnBgSubmit;
+  }
+}
+
+// Pagination
+
+
+.pagination {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  text-align: center;
+  font-size: 12px;
+
+  & > div {
+    flex-grow: 1;
+    flex-basis: 0;
+
+    &:first-child {
+      text-align: left;
+    }
+
+    &:last-child {
+      text-align: right;
+    }
+  }
+
+  .pagination-link {
+    a {
+      text-transform: uppercase;
+      color: inherit;
+      padding-bottom: 3px;
+      border-bottom: 1px solid lighten($bodyColor, 80);
+      transition: $default-transition;
+      display: inline-block;
+
+      &:hover {
+        border-bottom-color: $bodyColor;
+      }
+    }
+
+    .icon {
+      display: inline-block;
+      transition: $default-transition;
+
+    }
+
+    &.previous a:hover .icon {
+      transform: translateX(-5px);
+    }
+
+    &.next a:hover .icon {
+      transform: translateX(5px);
+    }
   }
 }

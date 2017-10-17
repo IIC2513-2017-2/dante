@@ -6,7 +6,7 @@ const router = new KoaRouter();
 const POSTS_PER_PAGE = 10;
 
 const setPostsWithPagination = async (ctx, next) => {
-  const page = ctx.query.page || 1;
+  const page = Number(ctx.query.page) || 1;
   const limit = ctx.query.limit || POSTS_PER_PAGE;
   const data = await ctx.orm.Post.findPublishedPaginated(page, limit, { include: ['author'] });
   Object.assign(ctx.state, {
