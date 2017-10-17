@@ -41,7 +41,8 @@ const setPostWithAssociations = async (ctx, next) => {
 
 router.get('posts.index', '/', setPostsWithPagination, async (ctx) => {
   const { posts, page, pages } = ctx.state;
-  if (page > pages) {
+
+  if (pages > 1 && page > pages) {
     return ctx.redirect(ctx.router.url('posts.index'));
   }
 
