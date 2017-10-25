@@ -8,6 +8,7 @@ const developmentMode = !process.env.NODE_ENV || process.env.NODE_ENV === 'devel
 function decorateWithHRM(entry) {
   if (developmentMode) {
     return [
+      'react-hot-loader/patch',
       'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000',
       entry,
     ];
@@ -24,6 +25,7 @@ module.exports = {
   context: path.join(__dirname, 'src', 'assets'),
   entry: {
     app: decorateWithHRM('./js/index.js'),
+    appReact: decorateWithHRM('./js/app.jsx'),
   },
   output: {
     publicPath: '/assets/',
@@ -35,23 +37,24 @@ module.exports = {
   },
   devtool: developmentMode ? 'eval' : 'source-map',
   module: {
-    loaders: [
+    rules: [
+      {
+        test: /\.jsx?$/,
+        exclude: /node_modules/,
+        loader: 'babel-loader',
+      },
       {
         test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)(\?v=.+)?$/,
         loader: 'file-loader?name=assets/[name].[ext]',
       },
+      {
+        test: /\.scss$/,
+        use: extractSCSS.extract({
+          fallback: 'style-loader',
+          use: ['css-loader', 'sass-loader'],
+        }),
+      },
     ],
-    rules: [{
-      test: /\.scss$/,
-      use: extractSCSS.extract({
-        fallback: 'style-loader',
-        use: ['css-loader', 'sass-loader'],
-      }),
-    },
-    {
-      test: /\.png$/,
-      use: 'file-loader?name=[name].[ext]',
-    }],
   },
   plugins: [
     new webpack.optimize.OccurrenceOrderPlugin(),

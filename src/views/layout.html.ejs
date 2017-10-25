@@ -3,30 +3,21 @@
 
   <head>
     <meta charset="utf-8">
-    <title>Dante</title>
+    <title>IIC2513 - CHANGE-ME</title>
     <% if (env !== 'development') { %>
       <link rel="stylesheet" href="/assets/styles.css">
     <% } %>
   </head>
 
   <body>
-    <%- include('header') %>
-
-    <div id="main-content">
-      <div class="container">
-        <%- body %>
+    <header>
+      <div id="logo">
+        <img src="/assets/logo.png" alt="Logo" />
       </div>
-    </div>
-
-    <%- include('footer') %>
-
-    <% if (currentUser) { %>
-      <form action="<%= signOutPath %>" id="signout-form" name="signout-form" method="post">
-        <input type="hidden" name="_method" value="delete" />
-      </form>
-    <% } %>
-
+    </header>
+    <%- body %>
     <script src="/assets/app.js"></script>
+    <script src="/assets/appReact.js"></script>
   </body>
 
 </html>

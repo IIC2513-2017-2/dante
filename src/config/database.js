@@ -8,11 +8,11 @@ const config = {
   },
   development: {
     extend: 'default',
-    database: 'dante_dev',
+    database: 'iic2513template_dev',
   },
   test: {
     extend: 'default',
-    database: 'dante_test',
+    database: 'iic2513template_test',
   },
   production: {
     extend: 'default',

@@ -7,6 +7,7 @@ const koaStatic = require('koa-static');
 const render = require('koa-ejs');
 const session = require('koa-session');
 const override = require('koa-override-method');
+const mailer = require('./mailers');
 const routes = require('./routes');
 const orm = require('./models');
 
@@ -66,7 +67,6 @@ app.use(koaFlashMessage);
 app.use(koaBody({
   multipart: true,
   keepExtensions: true,
-  formLimit: '512kb',
 }));
 
 app.use((ctx, next) => {
@@ -80,6 +80,8 @@ render(app, {
   viewExt: 'html.ejs',
   cache: !developmentMode,
 });
+
+mailer(app);
 
 // Routing middleware
 app.use(routes.routes());
