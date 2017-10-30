@@ -1,22 +1,6 @@
-<h1>Dante</h1>
-
-<% if (latestPost) { %>
-  <section class="home-post">
-    <h1 class="badge"><a href="<%= postShowPath(latestPost) %>">Último post</a></h1>
-    <%- include('posts/_post', { post: latestPost }) %>
-  </section>
-
-<% } %>
-
-<section class="home-landing">
-  <h1>¿Qué es dante?</h1>
-  <p>Dante es una pequeña bitácora hecha en base al mismo proyecto que los
-  alumnos del curso <a href="https://github.com/IIC2513-2017-2/syllabus/" target="_blank" rel="noopener">Tecnologías y Aplicaciones Web</a>.
-  </p>
-
-  <p>
-    Al mismo tiempo, esta bitácora servirá de proyecto de ejemplo, en
-    el cual todos los participantes del curso están invitados a colaborar en
-    su <a href="https://github.com/IIC2513-2017-2/dante" target="_blank" rel="noopener">repositorio en Github</a>.
-  </p>
-</section>
+<h1>Hello world</h1>
+<p>
+  App web version
+  <%= appVersion %>
+</p>
+<div id="react-app">Here a React app will be rendered</div>
