@@ -1,5 +1,9 @@
 .DS_Store
 
+# built assets
+build/**/*
+!build/assets/.gitkeep
+
 # Logs
 logs
 *.log
