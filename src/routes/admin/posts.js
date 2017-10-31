@@ -91,7 +91,7 @@ router.post('admin.posts.create', '/', setAuthors, async (ctx) => {
   const { create, createPreview, ...postFields } = ctx.request.body;
   const post = await ctx.orm.Post.build(postFields);
   try {
-    await post.save({ fields: ['title', 'bodySource', 'authorId', 'publishDate', 'slug'] });
+    await post.save({ fields: ['title', 'bodySource', 'authorId', 'publishDate', 'slug', 'status'] });
     if (create) {
       ctx.flashMessage.notice = 'Post se ha creado correctamente';
       ctx.redirect(ctx.router.url('admin.posts.edit', { id: post.id }));
@@ -133,16 +133,17 @@ router.patch('admin.posts.update', '/:id', setAuthors, setPost, async (ctx) => {
   }
 });
 
-router.del('admin.posts.destroy', '/:id', setPost, async (ctx) => {
-  const { post } = ctx.state;
+router.del('admin.posts.destroy', '/:id', setAuthors, setPost, async (ctx) => {
+  const { post, authors } = ctx.state;
   try {
     await post.destroy();
     ctx.flashMessage.notice = 'Post eliminado';
     ctx.redirect(ctx.router.url('admin.posts.index'));
-  } catch (validationError) {
-    await ctx.render('admin/post/edit', {
+  } catch (destroyError) {
+    await ctx.render('admin/posts/edit', {
       post,
-      errors: validationError.errors,
+      authors,
+      errors: [destroyError],
       submitPostPath: ctx.router.url('admin.post.update', { id: post.id }),
       deletePostPath: ctx.router.url('admin.post.destroy', { id: post.id }),
     });

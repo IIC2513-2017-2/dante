@@ -23,6 +23,10 @@ function slugifyTitle(post) {
   }
 }
 
+function destroyLikesHook(post) {
+  return post.destroyLikes();
+}
+
 module.exports = function definePost(sequelize, DataTypes) {
   const Post = sequelize.define('Post', {
     title: {
@@ -79,6 +83,7 @@ module.exports = function definePost(sequelize, DataTypes) {
   Post.beforeCreate(renderMarkdown);
   Post.beforeUpdate(slugifyTitle);
   Post.afterCreate(slugifyTitle);
+  Post.beforeDestroy(destroyLikesHook);
 
   Post.associate = function associate(models) {
     Post.belongsTo(models.User, { as: 'author', foreignKey: 'authorId' });
@@ -140,6 +145,15 @@ module.exports = function definePost(sequelize, DataTypes) {
     const excerpt = striptags(this.body).replace(/(\r\n|\n|\r)+/gm, ' ')
       .substring(0, length).trim();
     return excerpt.length ? `${excerpt}…` : 'Sin contenido';
+  };
+
+  Post.prototype.destroyLikes = function destroyLikes() {
+    return sequelize.models.Like.destroy({
+      where: {
+        likeable: 'post',
+        likeableId: this.id,
+      },
+    });
   };
 
   return Post;
