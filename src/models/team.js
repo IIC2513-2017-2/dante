@@ -13,7 +13,7 @@ module.exports = function defineTeam(sequelize, DataTypes) {
       },
     },
   });
-  Team.associate = function associate(models) {
+  Team.associate = function associate() {
     // associations can be defined here
   };
   return Team;

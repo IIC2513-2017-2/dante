@@ -1,18 +1,20 @@
 module.exports = {
   up(queryInterface, Sequelize) {
-    return queryInterface.createTable('Teams', {
+    return queryInterface.createTable('Likes', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      name: {
+      likeable: {
         type: Sequelize.STRING,
-        allowNull: false,
       },
-      repoUrl: {
-        type: Sequelize.STRING,
+      likeableId: {
+        type: Sequelize.INTEGER,
+      },
+      userId: {
+        type: Sequelize.INTEGER,
       },
       createdAt: {
         allowNull: false,
@@ -25,6 +27,6 @@ module.exports = {
     });
   },
   down(queryInterface) {
-    return queryInterface.dropTable('Teams');
+    return queryInterface.dropTable('Likes');
   },
 };

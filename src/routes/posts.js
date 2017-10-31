@@ -8,7 +8,7 @@ const POSTS_PER_PAGE = 10;
 const setPostsWithPagination = async (ctx, next) => {
   const page = Number(ctx.query.page) || 1;
   const limit = ctx.query.limit || POSTS_PER_PAGE;
-  const data = await ctx.orm.Post.findPublishedPaginated(page, limit, { include: ['author'] });
+  const data = await ctx.orm.Post.findPublishedPaginated(page, limit);
   Object.assign(ctx.state, {
     posts: data.rows,
     page,
@@ -19,7 +19,7 @@ const setPostsWithPagination = async (ctx, next) => {
 
 const setPostWithAssociations = async (ctx, next) => {
   const post = await ctx.orm.Post.findPublishedBySlug(ctx.params.slug, {
-    include: ['author'],
+    include: ['author', 'likes', 'likedByUsers'],
   });
   if (post) {
     ctx.state.post = post;
@@ -29,7 +29,7 @@ const setPostWithAssociations = async (ctx, next) => {
   const postById = Number.isInteger(Number(ctx.params.slug))
     && await ctx.orm.Post.findById(ctx.params.slug, {
       where: { status: 'published' },
-      include: ['author'],
+      include: ['author', 'likes', 'likedByUsers'],
     });
   if (postById) {
     return ctx.redirect(ctx.router.url('posts.show', { slug: postById.slug }));

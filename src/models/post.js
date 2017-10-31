@@ -82,6 +82,23 @@ module.exports = function definePost(sequelize, DataTypes) {
 
   Post.associate = function associate(models) {
     Post.belongsTo(models.User, { as: 'author', foreignKey: 'authorId' });
+    Post.hasMany(models.Like, {
+      as: 'likes',
+      foreignKey: 'likeableId',
+      scope: {
+        likeable: 'post',
+      },
+    });
+    Post.belongsToMany(models.User, {
+      through: {
+        model: models.Like,
+        scope: {
+          likeable: 'post',
+        },
+      },
+      as: 'likedByUsers',
+      foreignKey: 'likeableId',
+    });
   };
 
   Post.findBySlug = function findBySlug(slug, options) {
@@ -92,14 +109,14 @@ module.exports = function definePost(sequelize, DataTypes) {
     return Post.scope('published').find({ where: { slug }, ...options });
   };
 
-  Post.findPublishedPaginated = function findPublishedPaginated(page = 1, limit = 10, options) {
+  Post.findPublishedPaginated = function findPublishedPaginated(page = 1, limit = 10) {
     const offset = (page - 1) * limit;
     return Post.findAndCount({
       where: { status: 'published' },
       offset,
       limit,
       order: [['publishDate', 'DESC']],
-      ...options,
+      include: ['author', 'likes'],
     });
   };
 
