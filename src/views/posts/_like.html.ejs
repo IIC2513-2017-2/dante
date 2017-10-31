@@ -1,0 +1,12 @@
+<form action="<%= postLikesPath(post) %>" method="post">
+  <% if (hasLikeFromUser) { %>
+    <input type="hidden" name="_method" value="delete" />
+    <button type="submit">(<%= likesCount %>) Dislike</button>
+  <% } else if (currentUser) { %>
+    <input type="hidden" name="userId" value="<%= currentUser.id %>" />
+    <button type="submit">(<%= likesCount %>) Like</button>
+  <% } else { %>
+    <button type="submit" disabled>(<%= likesCount %>) Like</button>
+  <% } %>
+
+</form>

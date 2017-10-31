@@ -13,11 +13,11 @@ module.exports = function defineLike(sequelize, DataTypes) {
       unique: 'uniqueLike',
     },
     likeableId: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
       unique: 'uniqueLike',
     },
     userId: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
       unique: 'uniqueLike',
     },
   });

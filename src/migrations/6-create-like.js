@@ -4,14 +4,15 @@ module.exports = {
       id: {
         allowNull: false,
         autoIncrement: true,
-        primaryKey: true,
         type: Sequelize.INTEGER,
       },
       likeable: {
         type: Sequelize.STRING,
+        primaryKey: true,
       },
       likeableId: {
         type: Sequelize.INTEGER,
+        primaryKey: true,
       },
       userId: {
         type: Sequelize.INTEGER,
@@ -20,6 +21,7 @@ module.exports = {
           key: 'id',
         },
         onDelete: 'cascade',
+        primaryKey: true,
       },
       createdAt: {
         allowNull: false,

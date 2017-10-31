@@ -12,6 +12,15 @@
   </div>
   <footer>
     <span class="post-meta">
+      <%- include('_like', {
+        hasLikeFromUser: post.hasLikeFromUser(currentUser),
+        likesCount: post.likes.length,
+      }) %>
+      <span>
+        <%= post.likedByUsers.map(user => user.username) %>
+      </span>
+      <span>
+      <br />
       <time datetime="<%= post.publishDate %>">
         <a href="<%= postShowPath(post) %>">
           <%= post.displayDate() %>

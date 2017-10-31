@@ -121,7 +121,7 @@ module.exports = function definePost(sequelize, DataTypes) {
       offset,
       limit,
       order: [['publishDate', 'DESC']],
-      include: ['author', 'likes'],
+      include: ['author', 'likes', 'likedByUsers'],
     });
   };
 
@@ -154,6 +154,13 @@ module.exports = function definePost(sequelize, DataTypes) {
         likeableId: this.id,
       },
     });
+  };
+
+  Post.prototype.hasLikeFromUser = function hasLikeFromUser(user) {
+    if (!user) {
+      return false;
+    }
+    return this.likes.some(like => like.userId === user.id);
   };
 
   return Post;

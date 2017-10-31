@@ -40,7 +40,9 @@ const setPostWithAssociations = async (ctx, next) => {
 };
 
 router.get('posts.index', '/', setPostsWithPagination, async (ctx) => {
-  const { posts, page, pages } = ctx.state;
+  const {
+    posts, page, pages, currentUser,
+  } = ctx.state;
 
   if (pages > 1 && page > pages) {
     return ctx.redirect(ctx.router.url('posts.index'));
@@ -51,6 +53,15 @@ router.get('posts.index', '/', setPostsWithPagination, async (ctx) => {
     page,
     pages,
     postShowPath: post => ctx.router.url('posts.show', { slug: post.slug }),
+    postLikesPath: (post) => {
+      if (post.hasLikeFromUser(currentUser)) {
+        return ctx.router.url('post.dislike', {
+          slug: post.slug,
+          userId: currentUser.id,
+        });
+      }
+      return ctx.router.url('post.like', { slug: post.slug });
+    },
     pagePath: (pageNumber) => {
       const searchParams = new URLSearchParams();
       if (pageNumber > 1) {
@@ -69,5 +80,63 @@ router.get('posts.show', '/:slug', setPostWithAssociations, async (ctx) => {
   const { post } = ctx.state;
   await ctx.render('posts/show', { post });
 });
+
+router.post(
+  'post.like', '/:slug/likes',
+  async (ctx, next) => {
+    const { currentUser } = ctx.state;
+    const { userId } = ctx.request.body;
+    if (!currentUser || (!currentUser.isAdmin() && currentUser.id !== userId)) {
+      return ctx.redirect(ctx.session.latestPath);
+    }
+    Object.assign(ctx.state, { userId });
+    return next();
+  },
+  setPostWithAssociations,
+  async (ctx) => {
+    const { post, userId } = ctx.state;
+    try {
+      await ctx.orm.Like.create({
+        userId,
+        likeable: 'post',
+        likeableId: post.id,
+      });
+    } catch (validationError) {
+      ctx.flashMessage.warning = 'Oops, ya te ha gustado esto';
+    }
+
+    return ctx.redirect(ctx.session.latestPath);
+  },
+);
+
+router.del(
+  'post.dislike', '/:slug/likes/:userId',
+  async (ctx, next) => {
+    const { currentUser } = ctx.state;
+    const { userId } = ctx.params;
+    if (!currentUser || (!currentUser.isAdmin() && currentUser.id !== userId)) {
+      return ctx.redirect(ctx.session.latestPath);
+    }
+    Object.assign(ctx.state, { userId });
+    return next();
+  },
+  setPostWithAssociations,
+  async (ctx) => {
+    const { post, userId } = ctx.state;
+    try {
+      await ctx.orm.Like.destroy({
+        where: {
+          userId,
+          likeable: 'post',
+          likeableId: post.id,
+        },
+      });
+    } catch (destroyError) {
+      ctx.flashMessage.warning = `Ooops, ${destroyError}`;
+    }
+
+    return ctx.redirect(ctx.session.latestPath);
+  },
+);
 
 module.exports = router;
