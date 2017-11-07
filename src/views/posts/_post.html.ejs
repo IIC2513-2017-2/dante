@@ -12,24 +12,23 @@
   </div>
   <footer>
     <span class="post-meta">
-      <%- include('_like', {
-        hasLikeFromUser: post.hasLikeFromUser(currentUser),
-        likesCount: post.likes.length,
-      }) %>
-      <span>
-        <%= post.likedByUsers.map(user => user.username) %>
-      </span>
-      <span>
-      <br />
       <time datetime="<%= post.publishDate %>">
         <a href="<%= postShowPath(post) %>">
+          🗓
           <%= post.displayDate() %>
         </a>
       </time> ·
       <span class="post-author">
+        Escrito por
         <img class="post-author-gravatar" src="<%= post.author.gravatarUrl(40) %>" alt="Gravatar de <%= post.author.fullName() %>" />
         <%= post.author.fullName() %>
       </span>
     </span>
+    <div class="post-like-bar">
+      <%- include('_like', {
+        hasLikeFromUser: post.hasLikeFromUser(currentUser),
+        likesCount: post.likes.length,
+      }) %>
+    </div>
   </footer>
 </article>

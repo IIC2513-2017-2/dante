@@ -341,7 +341,6 @@ input:not([type=submit]), select, textarea {
     &:hover {
       background-color: saturate($btnBgDanger,30);
       border-color: transparent;
-
     }
   }
 
@@ -354,6 +353,7 @@ input:not([type=submit]), select, textarea {
 
     &:hover {
       border-color: lighten($bodyColor, 40);
+      background: white;
     }
   }
 

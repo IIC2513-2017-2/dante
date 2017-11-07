@@ -47,7 +47,7 @@ router.get('posts.index', '/', setPostsWithPagination, async (ctx) => {
   if (pages > 1 && page > pages) {
     return ctx.redirect(ctx.router.url('posts.index'));
   }
-
+  console.log(posts.length, page, pages);
   return ctx.render('posts/index', {
     posts,
     page,
@@ -77,8 +77,19 @@ router.get('posts.index', '/', setPostsWithPagination, async (ctx) => {
 });
 
 router.get('posts.show', '/:slug', setPostWithAssociations, async (ctx) => {
-  const { post } = ctx.state;
-  await ctx.render('posts/show', { post });
+  const { post, currentUser } = ctx.state;
+  await ctx.render('posts/show', {
+    post,
+    postLikesPath: () => {
+      if (post.hasLikeFromUser(currentUser)) {
+        return ctx.router.url('post.dislike', {
+          slug: post.slug,
+          userId: currentUser.id,
+        });
+      }
+      return ctx.router.url('post.like', { slug: post.slug });
+    },
+  });
 });
 
 router.post(

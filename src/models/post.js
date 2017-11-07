@@ -117,6 +117,7 @@ module.exports = function definePost(sequelize, DataTypes) {
   Post.findPublishedPaginated = function findPublishedPaginated(page = 1, limit = 10) {
     const offset = (page - 1) * limit;
     return Post.findAndCount({
+      distinct: 'true',
       where: { status: 'published' },
       offset,
       limit,

@@ -13,4 +13,13 @@
   <div class="post-body">
     <%- post.body %>
   </div>
+
+  <footer>
+    <div class="post-like-bar">
+      <%- include('_like', {
+        hasLikeFromUser: post.hasLikeFromUser(currentUser),
+        likesCount: post.likes.length,
+      }) %>
+    </div>
+  </footer>
 </article>
