@@ -26,7 +26,7 @@ const setPost = async (ctx, next) => {
 // Set post with associations
 const setPostWithAssociations = async (ctx, next) => {
   const post = await ctx.orm.Post.findById(ctx.params.id, {
-    include: ['author'],
+    include: ['author', 'likes', 'likedByUsers'],
   });
 
   if (post) {
@@ -67,12 +67,21 @@ router.get('admin.posts.new', '/new', setAuthors, async (ctx) => {
 });
 
 router.get('admin.posts.show', '/:id/preview', setPostWithAssociations, async (ctx) => {
-  const { post } = ctx.state;
+  const { post, currentUser } = ctx.state;
   await ctx.render('admin/posts/preview', {
     post,
     notice: 'Recuerda que esta es una vista previa del contenido de este post',
     postEditPath: ctx.router.url('admin.posts.edit', { id: post.id }),
     publishedPostPath: () => ctx.router.url('posts.show', { slug: post.slug }),
+    postLikesPath: () => {
+      if (post.hasLikeFromUser(currentUser)) {
+        return ctx.router.url('post.dislike', {
+          slug: post.slug,
+          userId: currentUser.id,
+        });
+      }
+      return ctx.router.url('post.like', { slug: post.slug });
+    },
   });
 });
 
