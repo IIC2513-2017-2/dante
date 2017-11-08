@@ -15,11 +15,7 @@
   <% } %>
 </form>
 
-<!-- <%= likesCount %> usuario<%= likesCount > 1 ? 's' :  ''%> -->
 <% const likeLimit = 3; const filtered = post.likedByUsers.slice(0, likeLimit); %>
-<!-- <% filtered.forEach(user => { %>
-  <img src="<%= user.gravatarUrl(20) %>" />
-<% }) %> -->
 <% if(post.likedByUsers.length) { %>
   <span class="like-names">
     <%= showHeart ? '♥' : '' %>

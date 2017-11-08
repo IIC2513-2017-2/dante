@@ -5,6 +5,8 @@ const router = new KoaRouter();
 
 const POSTS_PER_PAGE = 10;
 
+// Middlewares
+
 const setPostsWithPagination = async (ctx, next) => {
   const page = Number(ctx.query.page) || 1;
   const limit = ctx.query.limit || POSTS_PER_PAGE;
@@ -39,6 +41,29 @@ const setPostWithAssociations = async (ctx, next) => {
   return ctx.redirect(ctx.router.url('posts.index'));
 };
 
+// Like partial renderer
+
+const renderLikePartial = async (ctx, post, currentUser) => {
+  const hasLikeFromUser = post.hasLikeFromUser(currentUser);
+  return {
+    response: await ctx.render('posts/_like', {
+      layout: false,
+      writeResp: false,
+      hasLikeFromUser,
+      postLikesPath: () => {
+        if (hasLikeFromUser) {
+          return ctx.router.url('post.dislike', {
+            slug: post.slug,
+            userId: currentUser.id,
+          });
+        }
+        return ctx.router.url('post.like', { slug: post.slug });
+      },
+      likesCount: post.likes.length,
+    }),
+  };
+};
+
 router.get('posts.index', '/', setPostsWithPagination, async (ctx) => {
   const {
     posts, page, pages, currentUser,
@@ -47,7 +72,7 @@ router.get('posts.index', '/', setPostsWithPagination, async (ctx) => {
   if (pages > 1 && page > pages) {
     return ctx.redirect(ctx.router.url('posts.index'));
   }
-  console.log(posts.length, page, pages);
+
   return ctx.render('posts/index', {
     posts,
     page,
@@ -105,7 +130,7 @@ router.post(
   },
   setPostWithAssociations,
   async (ctx) => {
-    const { post, userId } = ctx.state;
+    const { post, userId, currentUser } = ctx.state;
     try {
       await ctx.orm.Like.create({
         userId,
@@ -116,7 +141,21 @@ router.post(
       ctx.flashMessage.warning = 'Oops, ya te ha gustado esto';
     }
 
-    return ctx.redirect(ctx.session.latestPath);
+    await post.reload();
+
+    switch (ctx.accepts(['json', 'html'])) {
+      case 'html': {
+        ctx.redirect(ctx.session.latestPath);
+        break;
+      }
+      case 'json': {
+        ctx.body = await renderLikePartial(ctx, post, currentUser);
+        break;
+      }
+      default: {
+        break;
+      }
+    }
   },
 );
 
@@ -133,7 +172,7 @@ router.del(
   },
   setPostWithAssociations,
   async (ctx) => {
-    const { post, userId } = ctx.state;
+    const { post, userId, currentUser } = ctx.state;
     try {
       await ctx.orm.Like.destroy({
         where: {
@@ -146,7 +185,21 @@ router.del(
       ctx.flashMessage.warning = `Ooops, ${destroyError}`;
     }
 
-    return ctx.redirect(ctx.session.latestPath);
+    await post.reload();
+
+    switch (ctx.accepts(['json', 'html'])) {
+      case 'html': {
+        ctx.redirect(ctx.session.latestPath);
+        break;
+      }
+      case 'json': {
+        ctx.body = await renderLikePartial(ctx, post, currentUser);
+        break;
+      }
+      default: {
+        break;
+      }
+    }
   },
 );
 
