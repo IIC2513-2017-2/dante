@@ -1,38 +1,27 @@
 module.exports = {
   up(queryInterface, Sequelize) {
-    return queryInterface.createTable('Posts', {
+    return queryInterface.createTable('Likes', {
       id: {
         allowNull: false,
         autoIncrement: true,
-        primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      title: {
+      likeable: {
         type: Sequelize.STRING,
-        allowNull: false,
+        primaryKey: true,
       },
-      body: {
-        type: Sequelize.TEXT,
+      likeableId: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
       },
-      bodySource: {
-        type: Sequelize.TEXT,
-      },
-      authorId: {
+      userId: {
         type: Sequelize.INTEGER,
         references: {
           model: 'Users',
           key: 'id',
         },
-      },
-      status: {
-        type: Sequelize.STRING,
-        defaultValue: 'draft',
-        allowNull: false,
-      },
-      publishDate: {
-        allowNull: false,
-        defaultValue: Sequelize.NOW,
-        type: Sequelize.DATE,
+        onDelete: 'cascade',
+        primaryKey: true,
       },
       createdAt: {
         allowNull: false,
@@ -45,6 +34,6 @@ module.exports = {
     });
   },
   down(queryInterface) {
-    return queryInterface.dropTable('Posts');
+    return queryInterface.dropTable('Likes');
   },
 };

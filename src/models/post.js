@@ -23,6 +23,10 @@ function slugifyTitle(post) {
   }
 }
 
+function destroyLikesHook(post) {
+  return post.destroyLikes();
+}
+
 module.exports = function definePost(sequelize, DataTypes) {
   const Post = sequelize.define('Post', {
     title: {
@@ -79,9 +83,27 @@ module.exports = function definePost(sequelize, DataTypes) {
   Post.beforeCreate(renderMarkdown);
   Post.beforeUpdate(slugifyTitle);
   Post.afterCreate(slugifyTitle);
+  Post.beforeDestroy(destroyLikesHook);
 
   Post.associate = function associate(models) {
     Post.belongsTo(models.User, { as: 'author', foreignKey: 'authorId' });
+    Post.hasMany(models.Like, {
+      as: 'likes',
+      foreignKey: 'likeableId',
+      scope: {
+        likeable: 'post',
+      },
+    });
+    Post.belongsToMany(models.User, {
+      through: {
+        model: models.Like,
+        scope: {
+          likeable: 'post',
+        },
+      },
+      as: 'likedByUsers',
+      foreignKey: 'likeableId',
+    });
   };
 
   Post.findBySlug = function findBySlug(slug, options) {
@@ -92,14 +114,15 @@ module.exports = function definePost(sequelize, DataTypes) {
     return Post.scope('published').find({ where: { slug }, ...options });
   };
 
-  Post.findPublishedPaginated = function findPublishedPaginated(page = 1, limit = 10, options) {
+  Post.findPublishedPaginated = function findPublishedPaginated(page = 1, limit = 10) {
     const offset = (page - 1) * limit;
     return Post.findAndCount({
+      distinct: 'true',
       where: { status: 'published' },
       offset,
       limit,
       order: [['publishDate', 'DESC']],
-      ...options,
+      include: ['author', 'likes', 'likedByUsers'],
     });
   };
 
@@ -123,6 +146,22 @@ module.exports = function definePost(sequelize, DataTypes) {
     const excerpt = striptags(this.body).replace(/(\r\n|\n|\r)+/gm, ' ')
       .substring(0, length).trim();
     return excerpt.length ? `${excerpt}…` : 'Sin contenido';
+  };
+
+  Post.prototype.destroyLikes = function destroyLikes() {
+    return sequelize.models.Like.destroy({
+      where: {
+        likeable: 'post',
+        likeableId: this.id,
+      },
+    });
+  };
+
+  Post.prototype.hasLikeFromUser = function hasLikeFromUser(user) {
+    if (!user) {
+      return false;
+    }
+    return this.likes.some(like => like.userId === user.id);
   };
 
   return Post;

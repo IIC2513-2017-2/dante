@@ -58,6 +58,35 @@ module.exports = function defineUser(sequelize, DataTypes) {
 
   User.associate = function associate(models) {
     User.belongsTo(models.Team, { foreignKey: 'teamId' });
+    User.belongsToMany(models.Post, {
+      through: {
+        model: models.Like,
+        scope: {
+          likeable: 'post',
+        },
+      },
+      as: 'likedPosts',
+      foreignKey: 'userId',
+      scope: {
+        status: 'published',
+      },
+    });
+
+    User.hasMany(models.Like, {
+      as: 'postLikes',
+      foreignKey: 'userId',
+      scope: {
+        likeable: 'post',
+      },
+    });
+
+    User.hasMany(models.Like, {
+      as: 'commentsLikes',
+      foreignKey: 'userId',
+      scope: {
+        likeable: 'comment',
+      },
+    });
   };
 
   User.prototype.fullName = function fullName() {

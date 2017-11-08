@@ -1,0 +1,32 @@
+<% let showHeart = false; %>
+<form action="<%= postLikesPath(post) %>" method="post">
+  <% if (hasLikeFromUser) { %>
+    <input type="hidden" name="_method" value="delete" />
+    <label class="btn btn-small" > ♥ Me gusta
+      <button type="submit" style="display:none;"></button>
+    </label>
+  <% } else if (currentUser) { %>
+    <input type="hidden" name="userId" value="<%= currentUser.id %>" />
+    <label class="btn btn-small btn-clear"> ♡ Me gusta
+      <button type="submit" style="display:none;"></button>
+    </label>
+  <% } else { %>
+    <% showHeart = true; %>
+  <% } %>
+</form>
+
+<% const likeLimit = 3; const filtered = post.likedByUsers.slice(0, likeLimit); %>
+<% if(post.likedByUsers.length) { %>
+  <span class="like-names">
+    <%= showHeart ? '♥' : '' %>
+    A
+    <%= filtered.map(user => user.firstName).join(', ') %>
+    <% if (post.likedByUsers.length > likeLimit) { %>
+      y <span title="<%= post.likedByUsers.map(user => user.fullName()).join('\n') %>">
+      <%= post.likedByUsers.length - likeLimit %> más
+      </span>
+    <% } %>
+
+    le<%= post.likedByUsers.length > 1 ? 's': '' %> ha gustado este post
+  </span>
+<% } %>
